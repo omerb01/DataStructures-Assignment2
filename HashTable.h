@@ -82,6 +82,7 @@ class HashTable {
 public:
 
     HashTable(int num_of_initial_elements, T **elements, int *keys) {
+        num_of_elements = num_of_initial_elements;
         size = num_of_initial_elements * 2;
 
         table = new Node *[size];

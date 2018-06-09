@@ -52,6 +52,10 @@ bool testInsert() {
     x = 120;
     ASSERT_FALSE(table.insert(&x, x));
 
+    for (int i = 50; i < size + 50; i++) {
+        ASSERT_TRUE(table.insert(&i, i));
+    }
+
     for (int i = 0; i < size; i++) {
         delete array[i];
     }
