@@ -23,7 +23,6 @@ class MinHeap {
     static int getMin(Node *node, MinHeap *minHeap);
     static void expandArray(MinHeap *minHeap);
     static void decreaseArray(MinHeap *minHeap);
-    //static int findNode(MinHeap *minHeap);
 public:
 
     MinHeap(int n, int* array);
@@ -39,9 +38,6 @@ public:
     int findMin();
 
     void delMin();
-
-    /*//TODO: temp
-    void printArr();*/
 
     ~MinHeap();
 };
