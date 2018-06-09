@@ -38,10 +38,13 @@ public:
 
     int findMin();
 
+    void delNode(int index);
+
     void delMin();
 
-    /*//TODO: temp
-    void printArr();*/
+    //TODO: temp
+    void printArr();
+    Node** getArr();
 
     ~MinHeap();
 };

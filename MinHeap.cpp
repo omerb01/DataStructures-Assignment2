@@ -3,6 +3,8 @@
 //
 #include "MinHeap.h"
 #include <iostream>
+#include <iomanip>
+
 using namespace std;
 
 MinHeap::MinHeap(int n, int *array) {
@@ -89,7 +91,7 @@ void MinHeap::siftDown(int index, MinHeap *minHeap) {
             swap(MinHeapArr[i], minHeap);
         }
     }
-    for (int i=ceil(index/2.0); i >= 0; i--) {
+    for (int i=0; i <=ceil(index/2.0) ; i++) {
         if (MinHeapArr[i]->left == nullptr &&
             MinHeapArr[i]->right == nullptr ||
             isMin(MinHeapArr[i], minHeap)) {
@@ -99,11 +101,12 @@ void MinHeap::siftDown(int index, MinHeap *minHeap) {
     }
 }
 
-/*void MinHeap::printArr() {
+void MinHeap::printArr() {
     for(int i=0;i<last;i++){
         cout<<HeapArr[i]->data<<endl;
     }
-}*/
+}
+
 
 void MinHeap::expandArray(MinHeap *minHeap){
     minHeap->size*=2;
@@ -181,6 +184,15 @@ void MinHeap::delMin() {
     if(size>=last*4){
         decreaseArray(this);
     }
+}
+
+void MinHeap::delNode(int index) {
+    if(!(index >= 0 && index<=last)){
+        return;
+    }
+    decKey(index,HeapArr[0]->data-100);
+    siftDown(last-1,this);
+    delMin();
 }
 
 MinHeap::~MinHeap() {
