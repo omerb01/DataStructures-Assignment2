@@ -17,6 +17,9 @@
 NEW_EXCEPTION(AVLTreeException, std::exception);
 NEW_EXCEPTION(AVLElementNotFound, AVLTreeException);
 
+NEW_EXCEPTION(HashTableException, std::exception);
+NEW_EXCEPTION(HashElementNotFound, HashTableException);
+
 NEW_EXCEPTION(OasisException, std::exception);
 NEW_EXCEPTION(OasisInvalidInput, OasisException);
 NEW_EXCEPTION(OasisFailure, OasisException);
