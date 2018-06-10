@@ -8,38 +8,42 @@
 using namespace std;
 
 MinHeap::MinHeap(int n, int *array) {
-    if (n < 2 || array == nullptr) {
-        size=1;
-        last=0;
-    } else {
-        HeapArr = new Node *[2*n];
-        last = n;
-        size=2*n;
-        for (int i = 0; i < n; i++) {
-            Node *new_node = new Node();
-            //new_node->index=i;
-            if (new_node == nullptr) {
-                //TODO:take care
-            }
-            new_node->data = array[i];
-            if (2 * (i+1) <= size) {
-                new_node->left = 2 * (i+1)-1;
-            } else {
-                new_node->left = nullptr;
-            }
-            if ((2 * i + 2) < size) {
-                new_node->right = 2 * (i+1);
-            } else {
-                new_node->right = nullptr;
-            }
-            HeapArr[i] = new_node;
+    //TODO: check who assures for n<2
+    HeapArr = new Node *[2 * n];
+    last = n;
+    size = 2 * n;
+    for (int i = 0; i < n; i++) {
+        Node *new_node = new Node();
+        new_node->index = new int();
+        *(new_node->index) = i;
+        if (new_node == nullptr) {
+            //TODO: take care of bad_alloc
         }
-        for(int i=n;i<2*n;i++){
-            HeapArr[i]=nullptr;
+        new_node->data = array[i];
+        if (2 * (i + 1) <= size) {
+            new_node->left = 2 * (i + 1) - 1;
+        } else {
+            new_node->left = nullptr;
         }
-        siftDown(last - 1, this);
+        if ((2 * i + 2) < size) {
+            new_node->right = 2 * (i + 1);
+        } else {
+            new_node->right = nullptr;
+        }
+        HeapArr[i] = new_node;
     }
+    for (int i = n; i < 2 * n; i++) {
+        HeapArr[i] = nullptr;
+    }
+    siftDown(last - 1, this);
+}
 
+int **MinHeap::getIndexes() {
+    int **indexes = new int *[last];
+    for (int i = 0; i < last; i++) {
+        indexes[i] = HeapArr[i]->index;
+    }
+    return indexes;
 }
 
 bool MinHeap::isMin(Node *node, MinHeap *minHeap) {
@@ -48,7 +52,7 @@ bool MinHeap::isMin(Node *node, MinHeap *minHeap) {
         MinHeapArr[node->right]->data < node->data) {
         return false;
     }
-    if ((node->left != nullptr && MinHeapArr[node->left] != nullptr)&&
+    if ((node->left != nullptr && MinHeapArr[node->left] != nullptr) &&
         MinHeapArr[node->left]->data < node->data) {
         return false;
     }
@@ -72,27 +76,37 @@ int MinHeap::getMin(Node *node, MinHeap *minHeap) {
 void MinHeap::swap(Node *node, MinHeap *minHeap) {
     Node **MinHeapArr = minHeap->HeapArr;
     int min = getMin(node, minHeap);
-    int temp,*temp_index;
-    if (node->right != nullptr && MinHeapArr[node->right] != nullptr  && MinHeapArr[node->right]->data == min) {
+    int temp, *temp_index, temp_index_value, temp2_index_value;
+    if (node->right != nullptr && MinHeapArr[node->right] != nullptr &&
+        MinHeapArr[node->right]->data == min) {
         temp = node->data;
-        temp_index=node->index;
+        temp_index = node->index;
+        temp_index_value = *(node->index);
+        temp2_index_value = *(MinHeapArr[node->right]->index);
         node->data = MinHeapArr[node->right]->data;
         node->index = MinHeapArr[node->right]->index;
+        *(node->index) = temp_index_value;
         MinHeapArr[node->right]->data = temp;
         MinHeapArr[node->right]->index = temp_index;
-    } else if (node->left != nullptr && MinHeapArr[node->left] != nullptr  && MinHeapArr[node->left]->data == min) {
+        *(MinHeapArr[node->right]->index) = temp2_index_value;
+    } else if (node->left != nullptr && MinHeapArr[node->left] != nullptr &&
+               MinHeapArr[node->left]->data == min) {
         temp = node->data;
-        temp_index=node->index;
+        temp_index = node->index;
+        temp_index_value = *(node->index);
+        temp2_index_value = *(MinHeapArr[node->left]->index);
         node->data = MinHeapArr[node->left]->data;
         node->index = MinHeapArr[node->left]->index;
+        *(node->index) = temp_index_value;
         MinHeapArr[node->left]->data = temp;
         MinHeapArr[node->left]->index = temp_index;
+        *(MinHeapArr[node->left]->index) = temp2_index_value;
     }
 }
 
 void MinHeap::siftDown(int index, MinHeap *minHeap) {
     Node **MinHeapArr = minHeap->HeapArr;
-    for (int i=ceil(index/2.0); i >= 0; i--) {
+    for (int i = ceil(index / 2.0); i >= 0; i--) {
         if (MinHeapArr[i]->left == nullptr &&
             MinHeapArr[i]->right == nullptr ||
             isMin(MinHeapArr[i], minHeap)) {
@@ -100,7 +114,7 @@ void MinHeap::siftDown(int index, MinHeap *minHeap) {
             swap(MinHeapArr[i], minHeap);
         }
     }
-    for (int i=0; i <=ceil(index/2.0) ; i++) {
+    for (int i = 0; i <= ceil(index / 2.0); i++) {
         if (MinHeapArr[i]->left == nullptr &&
             MinHeapArr[i]->right == nullptr ||
             isMin(MinHeapArr[i], minHeap)) {
@@ -111,101 +125,121 @@ void MinHeap::siftDown(int index, MinHeap *minHeap) {
 }
 
 void MinHeap::printArr() {
-    for(int i=0;i<last;i++){
-        cout<<HeapArr[i]->data<<endl;
+    for (int i = 0; i < last; i++) {
+        cout << HeapArr[i]->data << endl;
     }
 }
 
-
-void MinHeap::expandArray(MinHeap *minHeap){
-    minHeap->size*=2;
-    Node** new_arr = new Node *[minHeap->size];
-    for(int i=0;i<minHeap->last;i++){
-        new_arr[i]=minHeap->HeapArr[i];
+void MinHeap::expandArray(MinHeap *minHeap) {
+    minHeap->size *= 2;
+    Node **new_arr = new Node *[minHeap->size];
+    int last = minHeap->last;
+    int size = minHeap->size;
+    for (int i = 0; i < minHeap->last; i++) {
+        new_arr[i] = minHeap->HeapArr[i];
+        if (new_arr[i]->left == 0 && (2*(i+1) <= size)) {
+            new_arr[i]->left = 2 * (i + 1) - 1;
+        } else if(new_arr[i]->left == 0){
+            new_arr[i]->left = nullptr;
+        }
+        if (new_arr[i]->right == 0 &&(2 * (i + 1) + 1) < size) {
+            new_arr[i]->right = 2 * (i + 1);
+        } else if(new_arr[i]->right == 0) {
+            new_arr[i]->right = nullptr;
+        }
     }
-    for(int i=minHeap->last;i<minHeap->size;i++){
-        new_arr[i]= nullptr;
+    for (int i = minHeap->last; i < minHeap->size; i++) {
+        new_arr[i] = nullptr;
     }
-    if(minHeap->HeapArr!=nullptr) delete minHeap->HeapArr;
-    minHeap->HeapArr=new_arr;
+    if (minHeap->HeapArr != nullptr) delete minHeap->HeapArr;
+    minHeap->HeapArr = new_arr;
 }
 
-void MinHeap::decreaseArray(MinHeap *minHeap){
-    minHeap->size/=2;
-    if(minHeap->size==0){
+void MinHeap::decreaseArray(MinHeap *minHeap) {
+    minHeap->size /= 2;
+    if (minHeap->size == 0) {
         return;
     }
-    Node** new_arr = new Node *[minHeap->size];
-    for(int i=0;i<minHeap->last;i++){
-        new_arr[i]=minHeap->HeapArr[i];
+    Node **new_arr = new Node *[minHeap->size];
+    for (int i = 0; i < minHeap->last; i++) {
+        new_arr[i] = minHeap->HeapArr[i];
     }
-    for(int i=minHeap->last;i<minHeap->size;i++){
-        new_arr[i]= nullptr;
+    for (int i = minHeap->last; i < minHeap->size; i++) {
+        new_arr[i] = nullptr;
     }
     delete minHeap->HeapArr;
-    minHeap->HeapArr=new_arr;
+    minHeap->HeapArr = new_arr;
 }
 
-void MinHeap::insert(int data, int * index){
-    if(last+1 >= size){
+int *MinHeap::insert(int data) {
+    if (last + 1 >= size) {
         expandArray(this);
     }
     //TODO: if node is already in system, HashTable should take care of it with better time complexity
-    Node* new_node=new Node();
-    new_node->data=data;
-    new_node->index=index;
-    *(new_node->index)=last;
-    if (2 * (last+1+1) <= size) {
-        new_node->left = 2 * (last+1+1)-1;
-    } else {
-        new_node->left = nullptr;
-    }
-    if ((2 * (last+1) + 2) < size) {
-        new_node->right = 2 * (last+1+1);
-    } else {
+    Node *new_node = new Node();
+    new_node->data = data;
+    new_node->index = new int();
+    int *pointer_to_return = new_node->index;
+    *(new_node->index) = last;
+    new_node->index;
+    if (last == 0 && size == 2) {
+        new_node->left = 1;
         new_node->right = nullptr;
+    } else {
+        if (2 * (last + 1 + 1) <= size) {
+            new_node->left = 2 * (last + 1 + 1) - 1;
+        } else {
+            new_node->left = nullptr;
+        }
+        if ((2 * (last + 1) + 2) < size) {
+            new_node->right = 2 * (last + 1 + 1);
+        } else {
+            new_node->right = nullptr;
+        }
     }
-    HeapArr[last]=new_node;
+    HeapArr[last] = new_node;
     last++;
-    siftDown(last-1,this);
+    siftDown(last - 1, this);
+    return pointer_to_return;
 }
 
-void MinHeap::decKey(int index,int new_data){
-    if(!(index >= 0 && index<=last)){
+void MinHeap::decKey(int index, int new_data) {
+    if (!(index >= 0 && index < last)) {
         return;
     }
-    if(!(HeapArr[index]->data<new_data)){
-        HeapArr[index]->data=new_data;
-        siftDown(index-1,this);
+    if (!(HeapArr[index]->data < new_data)) {
+        HeapArr[index]->data = new_data;
+        siftDown(index - 1, this);
     }
 }
 
-int MinHeap::findMin(){
-    return HeapArr[0]->data;
+int MinHeap::findMin() {
+    if (HeapArr[0] == nullptr) return nullptr;
+    else return HeapArr[0]->data;
 }
 
 void MinHeap::delMin() {
     int temp = HeapArr[last - 1]->data;
     HeapArr[last - 1]->data = HeapArr[0]->data;
     HeapArr[0]->data = temp;
-    delete HeapArr[last-1];
-    HeapArr[last-1]=nullptr;
+    delete HeapArr[last - 1];
+    HeapArr[last - 1] = nullptr;
     last--;
-    if(last==0){
+    if (last == 0) {
         return;
     }
-    siftDown(last-1,this);
-    if(size>=last*4){
+    siftDown(last - 1, this);
+    if (size >= last * 4) {
         decreaseArray(this);
     }
 }
 
 void MinHeap::delNode(int index) {
-    if(!(index >= 0 && index<=last)){
+    if (!(index >= 0 && index < last)) {
         return;
     }
-    decKey(index,HeapArr[0]->data-100);
-    siftDown(last-1,this);
+    decKey(index, HeapArr[0]->data - 100);
+    siftDown(last - 1, this);
     delMin();
 }
 
