@@ -656,6 +656,15 @@ public:
     int getVerticesNumber() const {
         return getSize(root);
     }
+
+    T& getMaxElement() {
+        if (root == nullptr) return nullptr;
+        Node* node = root;
+        while(node->right != nullptr) {
+            node = node->right;
+        }
+        return *node->data;
+    }
 };
 
 #endif //DATASTRUCTURES_HW1_AVLTREE_H

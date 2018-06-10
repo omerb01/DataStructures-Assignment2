@@ -9,11 +9,6 @@
 #include "MinHeap.h";
 #include "AVLTree.h"
 
-class Player {
-    int playerID;
-    int score;
-};
-
 class DoubleKey {
     int key1;
     int key2;
@@ -43,9 +38,17 @@ public:
     bool operator>=(const DoubleKey &key);
 };
 
+class Player {
+public:
+    int playerID;
+    int score;
+};
+
 class Clan {
+public:
     int clanID;
-    int heap_index;
+    int* heap_index;
+    int num_of_players;
     AVLTree<Player, DoubleKey> players;
 };
 
