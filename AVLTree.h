@@ -17,7 +17,7 @@ using std::string;
 template<typename T, class Key>
 class AVLTree {
     struct Node {
-        T* data;
+        T *data;
         Key key;
         Node *parent;
         Node *left;
@@ -373,7 +373,7 @@ class AVLTree {
     }
 
     static void swapNodesData(Node *v1, Node *v2) {
-        T* temp_data = v1->data;
+        T *temp_data = v1->data;
         Key temp_key = v1->key;
 
         v1->data = v2->data;
@@ -478,6 +478,22 @@ class AVLTree {
         (*array)++;
         preOrderToArrayRecursive(root->left, array);
         preOrderToArrayRecursive(root->right, array);
+    }
+
+    static Node *getPrevNode(Node *node) {
+        if (node == nullptr) return nullptr;
+        if (node->left == nullptr) {
+            while (node->parent != nullptr && node->parent->right != node) {
+                node = node->parent;
+            }
+            return node->parent;
+        } else {
+            node = node->left;
+            while (node->right != nullptr) {
+                node = node->right;
+            }
+            return node;
+        }
     }
 
 public:
@@ -657,13 +673,20 @@ public:
         return getSize(root);
     }
 
-    T& getMaxElement() {
-        if (root == nullptr) return nullptr;
-        Node* node = root;
-        while(node->right != nullptr) {
-            node = node->right;
+    template<class Predicate>
+    void analizeTopElements(int k, Predicate func) {
+        if (root == nullptr) return;
+
+        Node *max_node = root;
+        while (max_node->right != nullptr) {
+            max_node = max_node->right;
         }
-        return *node->data;
+
+        Node *node = max_node;
+        for (int i = 0; i < k; i++) {
+            func(*node->data);
+            node = getPrevNode(node);
+        }
     }
 };
 
