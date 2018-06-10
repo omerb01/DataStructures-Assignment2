@@ -13,8 +13,9 @@ class MinHeap {
         int data;
         int right;
         int left;
+        int *index;
     };
-    Node **HeapArr;
+    Node **HeapArr=nullptr;
     int last,size;
 
     static void siftDown(int index, MinHeap *minHeap);
@@ -31,7 +32,7 @@ public:
 
     MinHeap& operator=(const MinHeap& heap) = delete;
 
-    void insert(int data);
+    void insert(int data,int* index);
 
     void decKey(int index, int new_data);
 
