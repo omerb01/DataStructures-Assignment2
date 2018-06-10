@@ -13,7 +13,7 @@ class MinHeap {
         int data;
         int right;
         int left;
-        int *index;
+        int index;
     };
     Node **HeapArr=nullptr;
     int last,size;
@@ -26,7 +26,7 @@ class MinHeap {
     static void decreaseArray(MinHeap *minHeap);
 public:
 
-    MinHeap(int n, int* array);
+    MinHeap(int n, int* array, int** indexes);
 
     MinHeap(const MinHeap& heap) = delete;
 
