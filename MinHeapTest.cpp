@@ -132,6 +132,32 @@ bool general_test(){
     heap.delNode(0);
     heap.delNode(0);
     if(heap.findMin()!=0) return false;
+
+
+    int arr2[20]={4,-4,2,-43,1,6,-6,7,-7,45,-54,-100,101,43,72,3,-3,11,12,-20};
+    MinHeap h(20,arr2);
+    cout << "h:" << endl;
+    h.printArr();
+
+    heap.insert(1);
+    heap.insert(2);
+    heap.insert(3);
+    heap.insert(4);
+    heap.insert(5);
+    heap.insert(6);
+    heap.insert(-6);
+    heap.insert(-7);
+    heap.insert(8);
+    heap.insert(-8);
+    heap.insert(10);
+    heap.insert(-5);
+    heap.insert(-4);
+    cout << "heap:" <<endl;
+    heap.printArr();
+    indexes=heap.getIndexes();
+    for(int i=0;i<13;i++){
+        if(i != *indexes[i]) return false;
+    }
     return true;
 }
 
