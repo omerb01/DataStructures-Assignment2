@@ -5,8 +5,8 @@
 #ifndef DATASTRUCTURES_HW2_OASIS_H
 #define DATASTRUCTURES_HW2_OASIS_H
 
-#include "HashTable.h";
-#include "MinHeap.h";
+#include "HashTable.h"
+#include "MinHeap.h"
 #include "AVLTree.h"
 
 class DoubleKey {
