@@ -21,6 +21,14 @@ class HashTable {
             this->key = key;
             next = nullptr;
         }
+
+        ~Node() {
+            delete data;
+        }
+
+        Node(const Node &node) = delete;
+
+        Node &operator=(const Node &node) = delete;
     };
 
     Node **table;
@@ -69,9 +77,9 @@ class HashTable {
 
     static void deleteTable(Node **table, int size) {
         for (int i = 0; i < size; i++) {
-            Node* list = table[i];
-            while(list != nullptr) {
-                Node* next = list->next;
+            Node *list = table[i];
+            while (list != nullptr) {
+                Node *next = list->next;
                 delete list;
                 list = next;
             }
@@ -80,7 +88,32 @@ class HashTable {
         delete[] table;
     }
 
+    static Node **copyTable(Node **table, int size) {
+        Node **new_table = new Node *[size];
+
+        for (int i = 0; i < size; i++) {
+            if (table[i] == nullptr) {
+                new_table[i] = nullptr;
+            } else {
+                Node *list = table[i];
+                Node *list_copy = new Node(*list->data, list->key);
+                Node *copy = list_copy;
+                list = list->next;
+                while (list != nullptr) {
+                    copy->next = new Node(*list->data, list->key);
+                    copy = copy->next;
+                    list = list->next;
+                }
+                new_table[i] = list_copy;
+            }
+        }
+
+        return new_table;
+    }
+
 public:
+
+    HashTable() = default;
 
     HashTable(int num_of_initial_elements, T **elements, int *keys) {
         num_of_elements = num_of_initial_elements;
@@ -103,8 +136,21 @@ public:
         }
     }
 
+    HashTable(const HashTable &htable) {
+        this->size = htable.size;
+        this->num_of_elements = htable.num_of_elements;
+        this->table = copyTable(htable.table, htable.size);
+    }
+
     ~HashTable() {
         deleteTable(table, size);
+    }
+
+    HashTable &operator=(const HashTable &htable) {
+        deleteTable(table, size);
+        size = htable.size;
+        num_of_elements = htable.num_of_elements;
+        table = copyTable(htable.table, htable.size);
     }
 
     bool insert(T *data, int key) {
