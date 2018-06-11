@@ -27,6 +27,7 @@ class HashTable {
     int size;
     int num_of_elements;
 
+
     int hash(int key) {
         const double a = (sqrt(5) - 1) / 2;
         return (int) floor(size * modf(a * key, nullptr));

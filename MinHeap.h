@@ -28,11 +28,11 @@ public:
 
     MinHeap(int n, int* array);
 
-    int** getIndexes();
+    int** getIndexes(int* sortedIDs);
 
-    MinHeap(const MinHeap& heap) = delete;
+    //MinHeap(const MinHeap& heap) = delete;
 
-    MinHeap& operator=(const MinHeap& heap) = delete;
+    //MinHeap& operator=(const MinHeap& heap) = delete;
 
     int* insert(int data);
 

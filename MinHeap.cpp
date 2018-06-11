@@ -4,47 +4,52 @@
 #include "MinHeap.h"
 #include <iostream>
 #include <iomanip>
+#include "exceptions.h"
 
 using namespace std;
 
 MinHeap::MinHeap(int n, int *array) {
-    //TODO: check who assures for n<2
-    HeapArr = new Node *[2 * n];
-    last = n;
-    size = 2 * n;
-    for (int i = 0; i < n; i++) {
-        Node *new_node = new Node();
-        new_node->index = new int();
-        *(new_node->index) = i;
-        if (new_node == nullptr) {
-            //TODO: take care of bad_alloc
+    try {
+        HeapArr = new Node *[2 * n];
+        last = n;
+        size = 2 * n;
+        for (int i = 0; i < n; i++) {
+            Node *new_node = new Node();
+            new_node->index = new int();
+            *(new_node->index) = i;
+            new_node->data = array[i];
+            if (2 * (i + 1) <= size) {
+                new_node->left = 2 * (i + 1) - 1;
+            } else {
+                new_node->left = nullptr;
+            }
+            if ((2 * i + 2) < size) {
+                new_node->right = 2 * (i + 1);
+            } else {
+                new_node->right = nullptr;
+            }
+            HeapArr[i] = new_node;
         }
-        new_node->data = array[i];
-        if (2 * (i + 1) <= size) {
-            new_node->left = 2 * (i + 1) - 1;
-        } else {
-            new_node->left = nullptr;
+        for (int i = n; i < 2 * n; i++) {
+            HeapArr[i] = nullptr;
         }
-        if ((2 * i + 2) < size) {
-            new_node->right = 2 * (i + 1);
-        } else {
-            new_node->right = nullptr;
-        }
-        HeapArr[i] = new_node;
+        siftDown(last - 1, this);
+    }catch(std::bad_alloc &ba){
+        throw MinHeapBadAlloc();
     }
-    for (int i = n; i < 2 * n; i++) {
-        HeapArr[i] = nullptr;
-    }
-    siftDown(last - 1, this);
 }
 
-int **MinHeap::getIndexes() {
-    int **indexes = new int *[last];
-    for (int i = 0; i < last; i++) {
+int **MinHeap::getIndexes(int* sortedIDs) {
+    int **indexes = new int *[size];
+    int* sortedCIDs = new int[size];
+    for (int i = 0; i < size; i++) {
         indexes[i] = HeapArr[i]->index;
+        sortedCIDs[i]=HeapArr[i]->data;
     }
     return indexes;
 }
+
+
 
 bool MinHeap::isMin(Node *node, MinHeap *minHeap) {
     Node **MinHeapArr = minHeap->HeapArr;
@@ -156,51 +161,59 @@ void MinHeap::expandArray(MinHeap *minHeap) {
 }
 
 void MinHeap::decreaseArray(MinHeap *minHeap) {
-    minHeap->size /= 2;
-    if (minHeap->size == 0) {
-        return;
+    try{
+        minHeap->size /= 2;
+        if (minHeap->size == 0) {
+            return;
+        }
+        Node **new_arr = new Node *[minHeap->size];
+        for (int i = 0; i < minHeap->last; i++) {
+            new_arr[i] = minHeap->HeapArr[i];
+        }
+        for (int i = minHeap->last; i < minHeap->size; i++) {
+            new_arr[i] = nullptr;
+        }
+        delete minHeap->HeapArr;
+        minHeap->HeapArr = new_arr;
+    }catch (std::bad_alloc &ex){
+        throw MinHeapBadAlloc();
     }
-    Node **new_arr = new Node *[minHeap->size];
-    for (int i = 0; i < minHeap->last; i++) {
-        new_arr[i] = minHeap->HeapArr[i];
-    }
-    for (int i = minHeap->last; i < minHeap->size; i++) {
-        new_arr[i] = nullptr;
-    }
-    delete minHeap->HeapArr;
-    minHeap->HeapArr = new_arr;
+
 }
 
 int *MinHeap::insert(int data) {
-    if (last + 1 >= size) {
-        expandArray(this);
-    }
-    //TODO: if node is already in system, HashTable should take care of it with better time complexity
-    Node *new_node = new Node();
-    new_node->data = data;
-    new_node->index = new int();
-    int *pointer_to_return = new_node->index;
-    *(new_node->index) = last;
-    new_node->index;
-    if (last == 0 && size == 2) {
-        new_node->left = 1;
-        new_node->right = nullptr;
-    } else {
-        if (2 * (last + 1 + 1) <= size) {
-            new_node->left = 2 * (last + 1 + 1) - 1;
-        } else {
-            new_node->left = nullptr;
+    try{if (last + 1 >= size) {
+            expandArray(this);
         }
-        if ((2 * (last + 1) + 2) < size) {
-            new_node->right = 2 * (last + 1 + 1);
-        } else {
+        Node *new_node = new Node();
+        new_node->data = data;
+        new_node->index = new int();
+        int *pointer_to_return = new_node->index;
+        *(new_node->index) = last;
+        new_node->index;
+        if (last == 0 && size == 2) {
+            new_node->left = 1;
             new_node->right = nullptr;
+        } else {
+            if (2 * (last + 1 + 1) <= size) {
+                new_node->left = 2 * (last + 1 + 1) - 1;
+            } else {
+                new_node->left = nullptr;
+            }
+            if ((2 * (last + 1) + 2) < size) {
+                new_node->right = 2 * (last + 1 + 1);
+            } else {
+                new_node->right = nullptr;
+            }
         }
+        HeapArr[last] = new_node;
+        last++;
+        siftDown(last - 1, this);
+        return pointer_to_return;
+    }catch(std::bad_alloc &ex){
+        throw MinHeapBadAlloc();
     }
-    HeapArr[last] = new_node;
-    last++;
-    siftDown(last - 1, this);
-    return pointer_to_return;
+
 }
 
 void MinHeap::decKey(int index, int new_data) {
@@ -214,7 +227,7 @@ void MinHeap::decKey(int index, int new_data) {
 }
 
 int MinHeap::findMin() {
-    if (HeapArr[0] == nullptr) return nullptr;
+    if (HeapArr[0] == nullptr) throw MinHeapElementNotFound();
     else return HeapArr[0]->data;
 }
 

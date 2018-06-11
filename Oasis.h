@@ -40,6 +40,12 @@ public:
 
 class Player {
 public:
+
+    Player(int playerID, int score){
+        this->playerID=playerID;
+        this->score=score;
+    }
+
     int playerID;
     int score;
 };

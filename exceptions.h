@@ -20,8 +20,12 @@ NEW_EXCEPTION(AVLElementNotFound, AVLTreeException);
 NEW_EXCEPTION(HashTableException, std::exception);
 NEW_EXCEPTION(HashElementNotFound, HashTableException);
 
+NEW_EXCEPTION(MinHeapElementNotFound, std::exception);
+NEW_EXCEPTION(MinHeapBadAlloc, std::exception);
+
 NEW_EXCEPTION(OasisException, std::exception);
 NEW_EXCEPTION(OasisInvalidInput, OasisException);
 NEW_EXCEPTION(OasisFailure, OasisException);
+NEW_EXCEPTION(OasisAlloctionFailure, OasisException);
 
 #endif //DATASTRUCTURES_HW1_EXCEPTIONS_H
