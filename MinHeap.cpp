@@ -62,7 +62,7 @@ MinHeap::MinHeap(const MinHeap& heap){
 
 MinHeap& MinHeap::operator=(const MinHeap& heap){
     try {
-        this->deleteHeap();
+        this->deleteHeap(this);
         this->size = heap.size;
         this->last = heap.last;
         this->HeapArr = new Node *[heap.size];
@@ -192,14 +192,14 @@ void MinHeap::printArr() {
     }
 }
 
-void MinHeap::deleteHeap(){
-    for (int i = 0; i < last; i++) {
-        if (HeapArr[i] != nullptr) {
-            delete HeapArr[i];
+void MinHeap::deleteHeap(MinHeap *minHeap){
+    for (int i = 0; i < minHeap->last; i++) {
+        if (minHeap->HeapArr[i] != nullptr) {
+            delete minHeap->HeapArr[i];
         }
 
     }
-    delete []HeapArr;
+    delete []minHeap->HeapArr;
 }
 
 void MinHeap::expandArray(MinHeap *minHeap) {
@@ -318,15 +318,6 @@ void MinHeap::delMin() {
     }
 }
 
-void MinHeap::delNode(int index) {
-    if (!(index >= 0 && index < last)) {
-        return;
-    }
-    decKey(index, HeapArr[0]->data - 100);
-    siftDown(last - 1, this);
-    delMin();
-}
-
 MinHeap::~MinHeap() {
-    deleteHeap();
+    deleteHeap(this);
 }

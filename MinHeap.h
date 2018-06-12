@@ -24,17 +24,16 @@ class MinHeap {
     static int getMin(Node *node, MinHeap *minHeap);
     static void expandArray(MinHeap *minHeap);
     static void decreaseArray(MinHeap *minHeap);
+    static void deleteHeap(MinHeap *minHeap);
 public:
 
     MinHeap() =default;
 
     MinHeap(int n, int* array);
 
-    int** getIndexes();
-
-    int* getSortedID();
-
     MinHeap(const MinHeap& heap);
+    int** getIndexes();
+    int* getSortedID();
 
     MinHeap& operator=(const MinHeap& heap);
 
@@ -44,14 +43,10 @@ public:
 
     int findMin();
 
-    void delNode(int index);
-
     void delMin();
 
     //TODO: temp
     void printArr();
-
-    void deleteHeap();
 
     ~MinHeap();
 };
