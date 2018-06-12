@@ -129,6 +129,15 @@ class AVLTree {
         B->h_right = getHeight(A);
         B->parent = A->parent;
         A->parent = B;
+
+        int A_rank = 1;
+        int B_rank = 1;
+        if(A->right != nullptr) A_rank += A->right->rank;
+        if(A->left != nullptr) A_rank += A->left->rank;
+        A->rank = A_rank;
+        if(B->right != nullptr) B_rank += B->right->rank;
+        if(B->left != nullptr) B_rank += B->left->rank;
+        B->rank = B_rank;
     }
 
     void roll_RR(Node *A) {
@@ -153,6 +162,15 @@ class AVLTree {
         B->h_left = getHeight(A);
         B->parent = A->parent;
         A->parent = B;
+
+        int A_rank = 1;
+        int B_rank = 1;
+        if(A->right != nullptr) A_rank += A->right->rank;
+        if(A->left != nullptr) A_rank += A->left->rank;
+        A->rank = A_rank;
+        if(B->right != nullptr) B_rank += B->right->rank;
+        if(B->left != nullptr) B_rank += B->left->rank;
+        B->rank = B_rank;
     }
 
     void roll_RL(Node *A) {
@@ -183,6 +201,19 @@ class AVLTree {
         }
         A->parent = C;
         B->parent = C;
+
+        int A_rank = 1;
+        int B_rank = 1;
+        int C_rank = 1;
+        if(A->right != nullptr) A_rank += A->right->rank;
+        if(A->left != nullptr) A_rank += A->left->rank;
+        A->rank = A_rank;
+        if(B->right != nullptr) B_rank += B->right->rank;
+        if(B->left != nullptr) B_rank += B->left->rank;
+        B->rank = B_rank;
+        if(C->right != nullptr) C_rank += C->right->rank;
+        if(C->left != nullptr) C_rank += C->left->rank;
+        C->rank = C_rank;
     }
 
     void roll_LR(Node *A) {
@@ -213,6 +244,19 @@ class AVLTree {
         }
         A->parent = C;
         B->parent = C;
+
+        int A_rank = 1;
+        int B_rank = 1;
+        int C_rank = 1;
+        if(A->right != nullptr) A_rank += A->right->rank;
+        if(A->left != nullptr) A_rank += A->left->rank;
+        A->rank = A_rank;
+        if(B->right != nullptr) B_rank += B->right->rank;
+        if(B->left != nullptr) B_rank += B->left->rank;
+        B->rank = B_rank;
+        if(C->right != nullptr) C_rank += C->right->rank;
+        if(C->left != nullptr) C_rank += C->left->rank;
+        C->rank = C_rank;
     }
 
     static int getSize(Node *vertex) {
@@ -491,6 +535,15 @@ class AVLTree {
         preOrderToArrayRecursive(root->right, array);
     }
 
+    static void updateRanks(Node* node, char flag) {
+
+        while(node != nullptr) {
+            if (flag == '+') node->rank++;
+            if (flag == '-') node->rank--;
+            node = node->parent;
+        }
+    }
+
 public:
     AVLTree() {
         root = nullptr;
@@ -539,7 +592,7 @@ public:
                 } else {
                     p->h_left++;
                 }
-                updateRanks(p);
+                updateRanks(p, '+');
                 return true;
             }
 
@@ -551,7 +604,7 @@ public:
             p->rank++;
 
             if (abs(getBalanceFactor(p)) > 1) {
-                updateRanks(p);
+                updateRanks(p->parent, '+');
                 if (getBalanceFactor(p) < 0) {
                     if (getBalanceFactor(p->right) < 0) {
                         roll_RR(p);
@@ -585,8 +638,10 @@ public:
 
             v->h_right = getHeight(v->right);
             v->h_left = getHeight(v->left);
+            v->rank--;
 
             if (abs(getBalanceFactor(v)) > 1) {
+                updateRanks(v->parent, '-');
                 int old_v_height = getHeight(v);
                 if (getBalanceFactor(v) < 0) {
                     if (getBalanceFactor(v->right) < 0) {
