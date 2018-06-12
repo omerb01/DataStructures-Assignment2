@@ -31,9 +31,9 @@ class HashTable {
         Node &operator=(const Node &node) = delete;
     };
 
-    Node **table;
-    int size;
-    int num_of_elements;
+    Node **table=nullptr;
+    int size=0;
+    int num_of_elements=0;
 
 
     int hash(int key) {
@@ -147,7 +147,9 @@ public:
     }
 
     HashTable &operator=(const HashTable &htable) {
-        deleteTable(table, size);
+        if(!(table==nullptr)){
+            deleteTable(table, size);
+        }
         size = htable.size;
         num_of_elements = htable.num_of_elements;
         table = copyTable(htable.table, htable.size);

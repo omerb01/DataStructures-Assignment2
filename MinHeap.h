@@ -16,7 +16,7 @@ class MinHeap {
         int *index;
     };
     Node **HeapArr=nullptr;
-    int last,size;
+    int last=0,size=0;
 
     static void siftDown(int index, MinHeap *minHeap);
     static bool isMin(Node* node, MinHeap *minHeap);
@@ -26,9 +26,13 @@ class MinHeap {
     static void decreaseArray(MinHeap *minHeap);
 public:
 
+    MinHeap() =default;
+
     MinHeap(int n, int* array);
 
-    int** getIndexes(int* sortedIDs);
+    int** getIndexes();
+
+    int* getSortedID();
 
     MinHeap(const MinHeap& heap);
 

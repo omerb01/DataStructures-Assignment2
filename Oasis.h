@@ -61,7 +61,9 @@ public:
 class Oasis {
     HashTable<Clan> clans;
     MinHeap clan_ids;
-
+    int ** clans_indexes;
+    int size;
+    int last;
 public:
 
     Oasis(int n, int *clanIDs);
@@ -77,6 +79,8 @@ public:
     void clanFight(int clanID1, int clanID2, int k1, int k2);
 
     void getMinClan(int* clanID);
+
+    ~Oasis();
 };
 
 #endif //DATASTRUCTURES_HW2_OASIS_H

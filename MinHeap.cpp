@@ -10,9 +10,9 @@ using namespace std;
 
 MinHeap::MinHeap(int n, int *array) {
     try {
-        HeapArr = new Node *[2 * n];
-        last = n;
-        size = 2 * n;
+        this->HeapArr = new Node *[2 * n];
+        this->last = n;
+        this->size = 2 * n;
         for (int i = 0; i < n; i++) {
             Node *new_node = new Node();
             new_node->index = new int();
@@ -28,10 +28,10 @@ MinHeap::MinHeap(int n, int *array) {
             } else {
                 new_node->right = nullptr;
             }
-            HeapArr[i] = new_node;
+            this->HeapArr[i] = new_node;
         }
         for (int i = n; i < 2 * n; i++) {
-            HeapArr[i] = nullptr;
+            this->HeapArr[i] = nullptr;
         }
         siftDown(last - 1, this);
     }catch(std::bad_alloc &ba){
@@ -40,34 +40,72 @@ MinHeap::MinHeap(int n, int *array) {
 }
 
 MinHeap::MinHeap(const MinHeap& heap){
-    this->size=heap.size;
-    this->last=heap.last;
-    this->HeapArr = new Node*[size];
-    for(int i=0;i<size;i++){
-       this->HeapArr[i]=heap.HeapArr[i];
+    try {
+        this->size = heap.size;
+        this->last = heap.last;
+        this->HeapArr = new Node *[size];
+        for (int i = 0; i < last; i++) {
+            Node *new_node = new Node();
+            new_node->data = heap.HeapArr[i]->data;
+            new_node->right = heap.HeapArr[i]->right;
+            new_node->left = heap.HeapArr[i]->left;
+            new_node->index = heap.HeapArr[i]->index;
+            this->HeapArr[i] = new_node;
+        }
+        for(int i=last;i<size;i++){
+            HeapArr[i]=nullptr;
+        }
+    }catch(std::bad_alloc &ba){
+    throw MinHeapBadAlloc();
     }
 }
 
 MinHeap& MinHeap::operator=(const MinHeap& heap){
-    this->deleteHeap();
-    this->size=heap.size;
-    this->last=heap.last;
-    this->HeapArr = new Node*[heap.size];
-    for(int i=0;i<heap.size;i++){
-        this->HeapArr[i]=heap.HeapArr[i];
+    try {
+        this->deleteHeap();
+        this->size = heap.size;
+        this->last = heap.last;
+        this->HeapArr = new Node *[heap.size];
+        for (int i = 0; i < heap.last; i++) {
+            Node *new_node = new Node();
+            new_node->data = heap.HeapArr[i]->data;
+            new_node->right = heap.HeapArr[i]->right;
+            new_node->left = heap.HeapArr[i]->left;
+            new_node->index = heap.HeapArr[i]->index;
+            this->HeapArr[i] = new_node;
+        }
+        for(int i=last;i<size;i++){
+            HeapArr[i]=nullptr;
+        }
+        return *this;
+    }catch(std::bad_alloc &ba){
+        throw MinHeapBadAlloc();
     }
 }
 
-int **MinHeap::getIndexes(int* sortedIDs) {
-    int **indexes = new int *[size];
-    int* sortedCIDs = new int[size];
-    for (int i = 0; i < size; i++) {
-        indexes[i] = HeapArr[i]->index;
-        sortedCIDs[i]=HeapArr[i]->data;
+int **MinHeap::getIndexes() {
+    try {
+        int **indexes = new int *[size];
+        for (int i = 0; i < last; i++) {
+            indexes[i] = HeapArr[i]->index;
+        }
+        return indexes;
+    }catch(std::bad_alloc &ba){
+        throw MinHeapBadAlloc();
     }
-    return indexes;
 }
 
+int* MinHeap::getSortedID() {
+    try {
+        int *sortedIDs = new int[size];
+        for (int i = 0; i < last; i++) {
+            sortedIDs[i] = HeapArr[i]->data;
+        }
+        return sortedIDs;
+    }catch(std::bad_alloc &ba){
+        throw MinHeapBadAlloc();
+    }
+}
 
 
 bool MinHeap::isMin(Node *node, MinHeap *minHeap) {
@@ -159,33 +197,38 @@ void MinHeap::deleteHeap(){
         if (HeapArr[i] != nullptr) {
             delete HeapArr[i];
         }
+
     }
     delete []HeapArr;
 }
 
 void MinHeap::expandArray(MinHeap *minHeap) {
-    minHeap->size *= 2;
-    Node **new_arr = new Node *[minHeap->size];
-    int last = minHeap->last;
-    int size = minHeap->size;
-    for (int i = 0; i < minHeap->last; i++) {
-        new_arr[i] = minHeap->HeapArr[i];
-        if (new_arr[i]->left == 0 && (2*(i+1) <= size)) {
-            new_arr[i]->left = 2 * (i + 1) - 1;
-        } else if(new_arr[i]->left == 0){
-            new_arr[i]->left = nullptr;
+    try {
+        minHeap->size *= 2;
+        Node **new_arr = new Node *[minHeap->size];
+        int last = minHeap->last;
+        int size = minHeap->size;
+        for (int i = 0; i < minHeap->last; i++) {
+            new_arr[i] = minHeap->HeapArr[i];
+            if (new_arr[i]->left == 0 && (2 * (i + 1) <= size)) {
+                new_arr[i]->left = 2 * (i + 1) - 1;
+            } else if (new_arr[i]->left == 0) {
+                new_arr[i]->left = nullptr;
+            }
+            if (new_arr[i]->right == 0 && (2 * (i + 1) + 1) < size) {
+                new_arr[i]->right = 2 * (i + 1);
+            } else if (new_arr[i]->right == 0) {
+                new_arr[i]->right = nullptr;
+            }
         }
-        if (new_arr[i]->right == 0 &&(2 * (i + 1) + 1) < size) {
-            new_arr[i]->right = 2 * (i + 1);
-        } else if(new_arr[i]->right == 0) {
-            new_arr[i]->right = nullptr;
+        for (int i = minHeap->last; i < minHeap->size; i++) {
+            new_arr[i] = nullptr;
         }
+        if (minHeap->HeapArr != nullptr) delete []minHeap->HeapArr;
+        minHeap->HeapArr = new_arr;
+    }catch(std::bad_alloc &ba){
+        throw MinHeapBadAlloc();
     }
-    for (int i = minHeap->last; i < minHeap->size; i++) {
-        new_arr[i] = nullptr;
-    }
-    if (minHeap->HeapArr != nullptr) delete minHeap->HeapArr;
-    minHeap->HeapArr = new_arr;
 }
 
 void MinHeap::decreaseArray(MinHeap *minHeap) {
@@ -201,7 +244,7 @@ void MinHeap::decreaseArray(MinHeap *minHeap) {
         for (int i = minHeap->last; i < minHeap->size; i++) {
             new_arr[i] = nullptr;
         }
-        delete minHeap->HeapArr;
+        delete []minHeap->HeapArr;
         minHeap->HeapArr = new_arr;
     }catch (std::bad_alloc &ex){
         throw MinHeapBadAlloc();
@@ -210,7 +253,8 @@ void MinHeap::decreaseArray(MinHeap *minHeap) {
 }
 
 int *MinHeap::insert(int data) {
-    try{if (last + 1 >= size) {
+    try{
+        if (last + 1 >= size) {
             expandArray(this);
         }
         Node *new_node = new Node();
@@ -218,7 +262,6 @@ int *MinHeap::insert(int data) {
         new_node->index = new int();
         int *pointer_to_return = new_node->index;
         *(new_node->index) = last;
-        new_node->index;
         if (last == 0 && size == 2) {
             new_node->left = 1;
             new_node->right = nullptr;
