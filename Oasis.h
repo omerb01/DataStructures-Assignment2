@@ -16,8 +16,8 @@ class DoubleKey {
 public:
 
     DoubleKey() {
-        key1 = -1;
-        key2 = -1;
+        key1 = 0;
+        key2 = 0;
     }
 
     DoubleKey(int key1, int key2) {

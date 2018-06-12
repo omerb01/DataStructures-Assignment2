@@ -5,6 +5,7 @@
 #include "testMacros.h"
 #include <iostream>
 #include "AVLTree.h"
+#include "Oasis.h"
 #include "exceptions.h"
 
 template<typename T>
@@ -276,6 +277,29 @@ bool testFind() {
     return true;
 }
 
+bool testGetWeakTree() {
+    AVLTree<int, DoubleKey> tree1;
+    tree1.insert(3, DoubleKey(3,3));
+    tree1.insert(6, DoubleKey(6,6));
+    tree1.insert(1, DoubleKey(1,1));
+    tree1.insert(2, DoubleKey(2,2));
+    tree1.insert(0, DoubleKey(0,0));
+
+    AVLTree<int, DoubleKey> tree2;
+    tree2.insert(3, DoubleKey(3,3));
+    tree2.insert(6, DoubleKey(6,6));
+    tree2.insert(1, DoubleKey(1,1));
+    tree2.insert(0, DoubleKey(0,0));
+
+    char c = tree1.getWeakTree(tree1,tree2,5,5);
+
+    AVLTree<int, DoubleKey> tree3;
+    AVLTree<int, DoubleKey> tree4;
+    c = tree3.getWeakTree(tree3,tree4,5,5);
+
+    return true;
+}
+
 int main() {
     RUN_TEST(testInsertLL);
     RUN_TEST(testInsertLR);
@@ -286,5 +310,6 @@ int main() {
     RUN_TEST(testRemoveLL);
     RUN_TEST(testRemoveLR);
     RUN_TEST(testFind);
+    RUN_TEST(testGetWeakTree);
     return 0;
 }

@@ -32,58 +32,42 @@ bool DoubleKey::operator>=(const DoubleKey &key) {
     return !(*this < key);
 }
 
-DoubleKey& DoubleKey::operator+=(const DoubleKey& key) {
+DoubleKey &DoubleKey::operator+=(const DoubleKey &key) {
     this->key1 += key.key1;
     this->key2 = this->key1;
     return *this;
 }
 
-DoubleKey& DoubleKey::operator-=(const DoubleKey& key) {
+DoubleKey &DoubleKey::operator-=(const DoubleKey &key) {
     this->key1 -= key.key1;
     this->key2 = this->key1;
     return *this;
 }
 
-class ScoresSummary {
-    int sum;
-public:
-    ScoresSummary() {
-        sum = 0;
-    }
-
-    int get() {
-        return sum;
-    }
-
-    void operator()(Player player) {
-        sum += player.score;
-    }
-};
-
 Oasis::Oasis(int n, int *clanIDs) {
     try {
         if (!(n < 2 || clanIDs == nullptr)) {
             MinHeap clans_heap(n, clanIDs);
-            int ** clans_indexes = clans_heap.getIndexes(); //O(n)
+            int **clans_indexes = clans_heap.getIndexes(); //O(n)
             int *clanSortedIDs = clans_heap.getSortedID(); //O(n)
-            Clan **clans=new Clan*[n];
+            Clan **clans = new Clan *[n];
             for (int i = 0; i < n; i++) {
                 Clan *new_clan = new Clan();
                 new_clan->clanID = clanSortedIDs[i];
                 new_clan->heap_index = clans_indexes[i];
-                clans[i]=new_clan;
+                clans[i] = new_clan;
             }
 
             HashTable<Clan> clans_hash_table(n, clans, clanIDs);
-            for(int i=0;i<n;i++){
+            for (int i = 0; i < n; i++) {
                 delete clans[i];
             }
-            delete []clans_indexes;
-            delete []clanSortedIDs;
-            delete []clans;
+            delete[]clans_indexes;
+            delete[]clanSortedIDs;
+            delete[]clans;
 
             this->clans = clans_hash_table;
-            this->clan_ids=clans_heap;
+            this->clan_ids = clans_heap;
         }
     } catch (std::bad_alloc &ba) {
         throw OasisAlloctionFailure();
@@ -95,10 +79,10 @@ void Oasis::addClan(int clanID) {
         throw OasisInvalidInput();
     }
     try {
-        try{
+        try {
             this->clans.search(clanID); //O(1)
             throw OasisFailure();
-        }catch(HashElementNotFound &he) {
+        } catch (HashElementNotFound &he) {
             Clan *new_clan = new Clan();
             new_clan->clanID = clanID;
             int *new_clan_ptr = this->clan_ids.insert(
@@ -127,7 +111,6 @@ void Oasis::addPlayer(int playerID, int score, int clanID) {
 }
 
 void Oasis::clanFight(int clanID1, int clanID2, int k1, int k2) {
-    /*
     if (k1 == 0 || k2 == 0 || clanID1 < 0 || clanID2 < 0)
         throw OasisInvalidInput();
     if (clanID1 == clanID2) throw OasisFailure();
@@ -140,19 +123,17 @@ void Oasis::clanFight(int clanID1, int clanID2, int k1, int k2) {
         if (clan1.num_of_players < k1 || clan2.num_of_players < k2)
             throw OasisFailure();
 
-        ScoresSummary top_scores1;
-        ScoresSummary top_scores2;
-        clan1.players.analizeTopElements(k1, top_scores1);
-        clan2.players.analizeTopElements(k2, top_scores2);
+        char result = clan1.players.getWeakTree(clan1.players, clan2.players, k1, k2);
 
         Clan *conquered_clan;
-        if (top_scores1.get() == top_scores2.get()) {
+        if (result == '=') {
             if (clan1.clanID < clan2.clanID) conquered_clan = &clan2;
             else conquered_clan = &clan1;
-        } else if (top_scores1.get() > top_scores2.get())
+        } else if (result == '2') {
             conquered_clan = &clan2;
-        else conquered_clan = &clan1;
-        //TODO: delete with delNode
+        } else { // result == '1'
+            conquered_clan = &clan1;
+        }
         clan_ids.decKey(*conquered_clan->heap_index, -1);
         conquered_clan->heap_index = nullptr;
         clan_ids.delMin();
@@ -160,7 +141,6 @@ void Oasis::clanFight(int clanID1, int clanID2, int k1, int k2) {
     catch (HashElementNotFound &e) {
         throw OasisFailure();
     }
-     */
 }
 
 void Oasis::getMinClan(int *clanID) {

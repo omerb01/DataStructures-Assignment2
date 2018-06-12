@@ -50,6 +50,8 @@ class AVLTree {
 
             rank = 1;
             sum_keys = key;
+            sum_keys += key;
+            sum_keys -= key;
         }
 
         Node(const Node &node) {
@@ -69,10 +71,6 @@ class AVLTree {
     };
 
     Node *root;
-
-    explicit AVLTree(Node *root) {
-        this->root = root;
-    }
 
     Node *binarySearch(Key key) {
         if (root == nullptr) return nullptr;
@@ -132,20 +130,20 @@ class AVLTree {
 
         int A_rank = 1;
         int B_rank = 1;
-        if(A->right != nullptr) A_rank += A->right->rank;
-        if(A->left != nullptr) A_rank += A->left->rank;
+        if (A->right != nullptr) A_rank += A->right->rank;
+        if (A->left != nullptr) A_rank += A->left->rank;
         A->rank = A_rank;
-        if(B->right != nullptr) B_rank += B->right->rank;
-        if(B->left != nullptr) B_rank += B->left->rank;
+        if (B->right != nullptr) B_rank += B->right->rank;
+        if (B->left != nullptr) B_rank += B->left->rank;
         B->rank = B_rank;
 
         Key A_keys_sum = A->key;
         Key B_keys_sum = B->key;
-        if(A->right != nullptr) A_keys_sum += A->right->sum_keys;
-        if(A->left != nullptr) A_keys_sum += A->left->sum_keys;
+        if (A->right != nullptr) A_keys_sum += A->right->sum_keys;
+        if (A->left != nullptr) A_keys_sum += A->left->sum_keys;
         A->sum_keys = A_keys_sum;
-        if(B->right != nullptr) B_keys_sum += B->right->sum_keys;
-        if(B->left != nullptr) B_keys_sum += B->left->sum_keys;
+        if (B->right != nullptr) B_keys_sum += B->right->sum_keys;
+        if (B->left != nullptr) B_keys_sum += B->left->sum_keys;
         B->sum_keys = B_keys_sum;
     }
 
@@ -174,20 +172,20 @@ class AVLTree {
 
         int A_rank = 1;
         int B_rank = 1;
-        if(A->right != nullptr) A_rank += A->right->rank;
-        if(A->left != nullptr) A_rank += A->left->rank;
+        if (A->right != nullptr) A_rank += A->right->rank;
+        if (A->left != nullptr) A_rank += A->left->rank;
         A->rank = A_rank;
-        if(B->right != nullptr) B_rank += B->right->rank;
-        if(B->left != nullptr) B_rank += B->left->rank;
+        if (B->right != nullptr) B_rank += B->right->rank;
+        if (B->left != nullptr) B_rank += B->left->rank;
         B->rank = B_rank;
 
         Key A_keys_sum = A->key;
         Key B_keys_sum = B->key;
-        if(A->right != nullptr) A_keys_sum += A->right->sum_keys;
-        if(A->left != nullptr) A_keys_sum += A->left->sum_keys;
+        if (A->right != nullptr) A_keys_sum += A->right->sum_keys;
+        if (A->left != nullptr) A_keys_sum += A->left->sum_keys;
         A->sum_keys = A_keys_sum;
-        if(B->right != nullptr) B_keys_sum += B->right->sum_keys;
-        if(B->left != nullptr) B_keys_sum += B->left->sum_keys;
+        if (B->right != nullptr) B_keys_sum += B->right->sum_keys;
+        if (B->left != nullptr) B_keys_sum += B->left->sum_keys;
         B->sum_keys = B_keys_sum;
     }
 
@@ -223,27 +221,27 @@ class AVLTree {
         int A_rank = 1;
         int B_rank = 1;
         int C_rank = 1;
-        if(A->right != nullptr) A_rank += A->right->rank;
-        if(A->left != nullptr) A_rank += A->left->rank;
+        if (A->right != nullptr) A_rank += A->right->rank;
+        if (A->left != nullptr) A_rank += A->left->rank;
         A->rank = A_rank;
-        if(B->right != nullptr) B_rank += B->right->rank;
-        if(B->left != nullptr) B_rank += B->left->rank;
+        if (B->right != nullptr) B_rank += B->right->rank;
+        if (B->left != nullptr) B_rank += B->left->rank;
         B->rank = B_rank;
-        if(C->right != nullptr) C_rank += C->right->rank;
-        if(C->left != nullptr) C_rank += C->left->rank;
+        if (C->right != nullptr) C_rank += C->right->rank;
+        if (C->left != nullptr) C_rank += C->left->rank;
         C->rank = C_rank;
 
         Key A_keys_sum = A->key;
         Key B_keys_sum = B->key;
         Key C_keys_sum = C->key;
-        if(A->right != nullptr) A_keys_sum += A->right->sum_keys;
-        if(A->left != nullptr) A_keys_sum += A->left->sum_keys;
+        if (A->right != nullptr) A_keys_sum += A->right->sum_keys;
+        if (A->left != nullptr) A_keys_sum += A->left->sum_keys;
         A->sum_keys = A_keys_sum;
-        if(B->right != nullptr) B_keys_sum += B->right->sum_keys;
-        if(B->left != nullptr) B_keys_sum += B->left->sum_keys;
+        if (B->right != nullptr) B_keys_sum += B->right->sum_keys;
+        if (B->left != nullptr) B_keys_sum += B->left->sum_keys;
         B->sum_keys = B_keys_sum;
-        if(C->right != nullptr) C_keys_sum += C->right->sum_keys;
-        if(C->left != nullptr) C_keys_sum += C->left->sum_keys;
+        if (C->right != nullptr) C_keys_sum += C->right->sum_keys;
+        if (C->left != nullptr) C_keys_sum += C->left->sum_keys;
         C->sum_keys = C_keys_sum;
     }
 
@@ -279,27 +277,27 @@ class AVLTree {
         int A_rank = 1;
         int B_rank = 1;
         int C_rank = 1;
-        if(A->right != nullptr) A_rank += A->right->rank;
-        if(A->left != nullptr) A_rank += A->left->rank;
+        if (A->right != nullptr) A_rank += A->right->rank;
+        if (A->left != nullptr) A_rank += A->left->rank;
         A->rank = A_rank;
-        if(B->right != nullptr) B_rank += B->right->rank;
-        if(B->left != nullptr) B_rank += B->left->rank;
+        if (B->right != nullptr) B_rank += B->right->rank;
+        if (B->left != nullptr) B_rank += B->left->rank;
         B->rank = B_rank;
-        if(C->right != nullptr) C_rank += C->right->rank;
-        if(C->left != nullptr) C_rank += C->left->rank;
+        if (C->right != nullptr) C_rank += C->right->rank;
+        if (C->left != nullptr) C_rank += C->left->rank;
         C->rank = C_rank;
 
         Key A_keys_sum = A->key;
         Key B_keys_sum = B->key;
         Key C_keys_sum = C->key;
-        if(A->right != nullptr) A_keys_sum += A->right->sum_keys;
-        if(A->left != nullptr) A_keys_sum += A->left->sum_keys;
+        if (A->right != nullptr) A_keys_sum += A->right->sum_keys;
+        if (A->left != nullptr) A_keys_sum += A->left->sum_keys;
         A->sum_keys = A_keys_sum;
-        if(B->right != nullptr) B_keys_sum += B->right->sum_keys;
-        if(B->left != nullptr) B_keys_sum += B->left->sum_keys;
+        if (B->right != nullptr) B_keys_sum += B->right->sum_keys;
+        if (B->left != nullptr) B_keys_sum += B->left->sum_keys;
         B->sum_keys = B_keys_sum;
-        if(C->right != nullptr) C_keys_sum += C->right->sum_keys;
-        if(C->left != nullptr) C_keys_sum += C->left->sum_keys;
+        if (C->right != nullptr) C_keys_sum += C->right->sum_keys;
+        if (C->left != nullptr) C_keys_sum += C->left->sum_keys;
         C->sum_keys = C_keys_sum;
     }
 
@@ -314,96 +312,6 @@ class AVLTree {
         **result = vertex;
         (*result)++;
         sortToArray(vertex->right, result);
-    }
-
-    static Node **mergeNodeArrays(Node **a, int size_a, Node **b, int size_b) {
-        if (size_a + size_b == 0) return nullptr;
-        Node **result = new Node *[(size_a + size_b)];
-        Node **temp = result;
-        Node **p1 = a;
-        Node **p2 = b;
-        while (p1 != a + size_a && p2 != b + size_b) {
-            Key a_key = (*p1)->key;
-            Key b_key = (*p2)->key;
-            if (a_key > b_key) {
-                *temp = *p2;
-                p2++;
-            } else {
-                *temp = *p1;
-                p1++;
-            }
-            temp++;
-        }
-        while (p1 != a + size_a) {
-            *temp = *p1;
-            p1++;
-            temp++;
-        }
-        while (p2 != b + size_b) {
-            *temp = *p2;
-            p2++;
-            temp++;
-        }
-        return result;
-    }
-
-    template<class Filter>
-    static Node **
-    filterElements(Node **sorted_array, int *size, Filter filterFunc) {
-        if (sorted_array == nullptr) return nullptr;
-
-        int temp_size = *size;
-
-        for (int i = 0; i < temp_size; i++) {
-            if (!filterFunc(*(sorted_array[i])->data)) {
-                (*size)--;
-            }
-        }
-
-        if (*size == 0) return nullptr;
-        Node **result = new Node *[*size];
-        Node **temp = result;
-        Node **p = sorted_array;
-        while (p != sorted_array + temp_size) {
-
-            if (filterFunc(*(*p)->data)) {
-                *temp = *p;
-                temp++;
-            }
-            p++;
-        }
-
-        return result;
-    }
-
-    static Node **
-    clearSameElements(Node **sorted_array, int size, int *new_size) {
-        if (size == 0) return nullptr;
-
-        *new_size = size;
-        for (int i = 0; i < size - 1; i++) {
-            if (sorted_array[i]->key == sorted_array[i + 1]->key) {
-                (*new_size)--;
-            }
-        }
-
-        Node **result = new Node *[*new_size];
-        Node **temp = result;
-        Node **p = sorted_array;
-        while (p != sorted_array + size - 1) {
-            if ((*p)->key != (*(p + 1))->key) {
-                *temp = *p;
-                temp++;
-            }
-            p++;
-        }
-        if (size != 1) {
-            if ((*p)->key != (*(p - 1))->key) *temp = *p;
-        } else {
-            *temp = *p;
-        }
-
-        return result;
     }
 
     static Node *buildEmptyCompleteTree(int height) {
@@ -459,16 +367,6 @@ class AVLTree {
         root->key = current->key;
         (*sorted_array)++;
         putValuesInEmptyIncompleteTree(root->right, sorted_array);
-    }
-
-    static Node *buildIncompleteTree(Node **sorted_array, int size) {
-        if (sorted_array == nullptr) return nullptr;
-        int complete_height = (int) (ceil(log2(size + 1)));
-        Node *root = buildEmptyCompleteTree(complete_height - 1);
-        int leaves_to_remove = (int) (pow(2, complete_height) - size - 1);
-        removeVerticesFromCompleteTree(root, &leaves_to_remove);
-        putValuesInEmptyIncompleteTree(root, &sorted_array);
-        return root;
     }
 
     static void swapNodesData(Node *v1, Node *v2) {
@@ -579,20 +477,55 @@ class AVLTree {
         preOrderToArrayRecursive(root->right, array);
     }
 
-    static void updateRanks(Node* node, char flag) {
-        while(node != nullptr) {
+    static void updateRanks(Node *node, char flag) {
+        while (node != nullptr) {
             if (flag == '+') node->rank++;
             if (flag == '-') node->rank--;
             node = node->parent;
         }
     }
 
-    static void updateSumKeys(Node* parent, Key temp, char flag) {
-        while(parent != nullptr) {
+    static void updateSumKeys(Node *parent, Key temp, char flag) {
+        while (parent != nullptr) {
             if (flag == '+') parent->sum_keys += temp;
             if (flag == '-') parent->sum_keys -= temp;
             parent = parent->parent;
         }
+    }
+
+    static Key getTopKeys(Node *node, int k) {
+        Key result;
+
+        while (k != 0 && node != nullptr) {
+            if (node->right != nullptr) {
+                if (node->right->rank + 1 < k) {
+                    result += node->right->sum_keys;
+                    result += node->key;
+                    k -= node->right->rank + 1;
+                    node = node->left;
+                } else if (node->right->rank + 1 > k) {
+                    node = node->right;
+                } else { // ==
+                    result += node->right->sum_keys;
+                    result += node->key;
+                    k = 0;
+                }
+            } else if (node->left != nullptr) {
+                if (k == 1) {
+                    result += node->key;
+                    k = 0;
+                } else {
+                    result += node->key;
+                    k--;
+                    node = node->left;
+                }
+            } else {
+                result += node->key;
+                break;
+            }
+        }
+
+        return result;
     }
 
 public:
@@ -723,44 +656,12 @@ public:
         return true;
     }
 
-    int getTreeSize() const {
-        return getSize(root);
-    }
-
-    template<class Filter>
-    static AVLTree
-    merge(const AVLTree &tree1, const AVLTree &tree2, Filter filterFunc) {
-        Node **temp;
-
-        int size_a = getSize(tree1.root);
-        Node **a = nullptr;
-        if (size_a != 0) {
-            a = new Node *[size_a];
-            temp = a;
-            sortToArray(tree1.root, &temp);
-        }
-
-        int size_b = getSize(tree2.root);
-        Node **b = nullptr;
-        if (size_b != 0) {
-            b = new Node *[size_b];
-            temp = b;
-            sortToArray(tree2.root, &temp);
-        }
-
-        int new_size = 0;
-        Node **uncleared_c = mergeNodeArrays(a, size_a, b, size_b);
-        Node **unfiltered_c = clearSameElements(uncleared_c, size_a + size_b,
-                                                &new_size);
-        Node **c = filterElements(unfiltered_c, &new_size, filterFunc);
-        Node *new_root = buildIncompleteTree(c, new_size);
-        delete[] a;
-        delete[] b;
-        delete[] uncleared_c;
-        delete[] unfiltered_c;
-        delete[] c;
-
-        return AVLTree(new_root);
+    static char getWeakTree(AVLTree &tree1, AVLTree &tree2, int k1, int k2) {
+        Key sum_tree1 = getTopKeys(tree1.root, k1);
+        Key sum_tree2 = getTopKeys(tree2.root, k2);
+        if (sum_tree1 > sum_tree2) return '2';
+        else if (sum_tree1 < sum_tree2) return '1';
+        else return '=';
     }
 
     T *inOrderToArray() const {
@@ -777,10 +678,6 @@ public:
         T *temp = result;
         preOrderToArrayRecursive(root, &temp);
         return result;
-    }
-
-    int getVerticesNumber() const {
-        return getSize(root);
     }
 };
 
