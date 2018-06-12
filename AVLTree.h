@@ -25,6 +25,9 @@ class AVLTree {
         Node *right;
         int h_right;
 
+        int rank;
+        Key sum_keys;
+
         Node() {
             data = nullptr;
             parent = nullptr;
@@ -32,6 +35,8 @@ class AVLTree {
             right = nullptr;
             h_right = -1;
             h_left = -1;
+
+            rank = 1;
         }
 
         Node(const T &data, const Key &key) {
@@ -42,6 +47,9 @@ class AVLTree {
             right = nullptr;
             h_right = -1;
             h_left = -1;
+
+            rank = 1;
+            sum_keys = key;
         }
 
         Node(const Node &node) {
@@ -52,6 +60,9 @@ class AVLTree {
             parent = nullptr;
             left = nullptr;
             right = nullptr;
+
+            rank = node.rank;
+            sum_keys = node.sum_keys;
         }
 
         Node &operator=(const Node &node) = delete;
@@ -480,22 +491,6 @@ class AVLTree {
         preOrderToArrayRecursive(root->right, array);
     }
 
-    static Node *getPrevNode(Node *node) {
-        if (node == nullptr) return nullptr;
-        if (node->left == nullptr) {
-            while (node->parent != nullptr && node->parent->right != node) {
-                node = node->parent;
-            }
-            return node->parent;
-        } else {
-            node = node->left;
-            while (node->right != nullptr) {
-                node = node->right;
-            }
-            return node;
-        }
-    }
-
 public:
     AVLTree() {
         root = nullptr;
@@ -544,6 +539,7 @@ public:
                 } else {
                     p->h_left++;
                 }
+                updateRanks(p);
                 return true;
             }
 
@@ -552,8 +548,10 @@ public:
             } else {
                 p->h_left++;
             }
+            p->rank++;
 
             if (abs(getBalanceFactor(p)) > 1) {
+                updateRanks(p);
                 if (getBalanceFactor(p) < 0) {
                     if (getBalanceFactor(p->right) < 0) {
                         roll_RR(p);
@@ -671,22 +669,6 @@ public:
 
     int getVerticesNumber() const {
         return getSize(root);
-    }
-
-    template<class Predicate>
-    void analizeTopElements(int k, Predicate func) {
-        if (root == nullptr) return;
-
-        Node *max_node = root;
-        while (max_node->right != nullptr) {
-            max_node = max_node->right;
-        }
-
-        Node *node = max_node;
-        for (int i = 0; i < k; i++) {
-            func(*node->data);
-            node = getPrevNode(node);
-        }
     }
 };
 

@@ -115,6 +115,7 @@ void Oasis::addPlayer(int playerID, int score, int clanID) {
 }
 
 void Oasis::clanFight(int clanID1, int clanID2, int k1, int k2) {
+    /*
     if (k1 == 0 || k2 == 0 || clanID1 < 0 || clanID2 < 0)
         throw OasisInvalidInput();
     if (clanID1 == clanID2) throw OasisFailure();
@@ -147,6 +148,7 @@ void Oasis::clanFight(int clanID1, int clanID2, int k1, int k2) {
     catch (HashElementNotFound &e) {
         throw OasisFailure();
     }
+     */
 }
 
 void Oasis::getMinClan(int *clanID) {
