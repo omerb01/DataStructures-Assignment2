@@ -152,6 +152,7 @@ public:
         size = htable.size;
         num_of_elements = htable.num_of_elements;
         table = copyTable(htable.table, htable.size);
+        return *this;
     }
 
     bool insert(T *data, int key) {

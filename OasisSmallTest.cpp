@@ -10,9 +10,9 @@ bool testInit(){
     os.addClan(10);
     int minclan;
     os.getMinClan(&minclan);
-    os.addPlayer(123,100,23);
+/*    os.addPlayer(123,100,23);
     os.addClan(1);
-    os.getMinClan(&minclan);
+    os.getMinClan(&minclan);*/
     cout << minclan << endl;
     return true;
 }

@@ -158,6 +158,7 @@ void MinHeap::printArr() {
 void MinHeap::deleteHeap(MinHeap *minHeap){
     for (int i = 0; i < minHeap->last; i++) {
         if (minHeap->HeapArr[i] != nullptr) {
+            delete minHeap->HeapArr[i]->index;
             delete minHeap->HeapArr[i];
         }
 

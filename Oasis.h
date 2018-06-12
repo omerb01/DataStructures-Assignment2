@@ -61,9 +61,6 @@ public:
 class Oasis {
     HashTable<Clan> clans;
     MinHeap clan_ids;
-    int ** clans_indexes;
-    int size;
-    int last;
 public:
 
     Oasis(int n, int *clanIDs);

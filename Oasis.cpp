@@ -52,9 +52,7 @@ Oasis::Oasis(int n, int *clanIDs) {
     try {
         if (!(n < 2 || clanIDs == nullptr)) {
             MinHeap clans_heap(n, clanIDs);
-            clans_indexes = clans_heap.getIndexes(); //O(n)
-            size=n;
-            last=n-1;
+            int ** clans_indexes = clans_heap.getIndexes(); //O(n)
             int *clanSortedIDs = clans_heap.getSortedID(); //O(n)
             Clan **clans=new Clan*[n];
             for (int i = 0; i < n; i++) {
@@ -68,6 +66,7 @@ Oasis::Oasis(int n, int *clanIDs) {
             for(int i=0;i<n;i++){
                 delete clans[i];
             }
+            delete []clans_indexes;
             delete []clanSortedIDs;
             delete []clans;
 
@@ -87,29 +86,15 @@ void Oasis::addClan(int clanID) {
         try{
             this->clans.search(clanID); //O(1)
             throw OasisFailure();
-        }catch(HashElementNotFound &he){
+        }catch(HashElementNotFound &he) {
             Clan *new_clan = new Clan();
             new_clan->clanID = clanID;
-            int* new_clan_ptr=this->clan_ids.insert(
+            int *new_clan_ptr = this->clan_ids.insert(
                     clanID);//O(log(n))
-            new_clan->heap_index=new_clan_ptr;
-                    clans.insert(new_clan,clanID);
-            last++;
-            if(last>=size){
-                size*=2;
-                int** new_array = new int*[size];
-                for(int i=0;i<=last-1;i++){
-                    new_array[i]=this->clans_indexes[i];
-                }
-                new_array[last]=new_clan_ptr;
-                delete []clans_indexes;
-                clans_indexes=new_array;
-            }else{
-                clans_indexes[last]=new_clan_ptr;
-            }
+            new_clan->heap_index = new_clan_ptr;
+            clans.insert(new_clan, clanID);
             delete new_clan;
         }
-
     } catch (std::bad_alloc &ba) {
         throw OasisAlloctionFailure();
     }
