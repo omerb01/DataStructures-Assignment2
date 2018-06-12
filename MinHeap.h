@@ -30,9 +30,9 @@ public:
 
     int** getIndexes(int* sortedIDs);
 
-    //MinHeap(const MinHeap& heap) = delete;
+    MinHeap(const MinHeap& heap);
 
-    //MinHeap& operator=(const MinHeap& heap) = delete;
+    MinHeap& operator=(const MinHeap& heap);
 
     int* insert(int data);
 
@@ -46,7 +46,8 @@ public:
 
     //TODO: temp
     void printArr();
-    Node** getArr();
+
+    void deleteHeap();
 
     ~MinHeap();
 };

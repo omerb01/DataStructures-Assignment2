@@ -39,6 +39,25 @@ MinHeap::MinHeap(int n, int *array) {
     }
 }
 
+MinHeap::MinHeap(const MinHeap& heap){
+    this->size=heap.size;
+    this->last=heap.last;
+    this->HeapArr = new Node*[size];
+    for(int i=0;i<size;i++){
+       this->HeapArr[i]=heap.HeapArr[i];
+    }
+}
+
+MinHeap& MinHeap::operator=(const MinHeap& heap){
+    this->deleteHeap();
+    this->size=heap.size;
+    this->last=heap.last;
+    this->HeapArr = new Node*[heap.size];
+    for(int i=0;i<heap.size;i++){
+        this->HeapArr[i]=heap.HeapArr[i];
+    }
+}
+
 int **MinHeap::getIndexes(int* sortedIDs) {
     int **indexes = new int *[size];
     int* sortedCIDs = new int[size];
@@ -133,6 +152,15 @@ void MinHeap::printArr() {
     for (int i = 0; i < last; i++) {
         cout << HeapArr[i]->data << endl;
     }
+}
+
+void MinHeap::deleteHeap(){
+    for (int i = 0; i < last; i++) {
+        if (HeapArr[i] != nullptr) {
+            delete HeapArr[i];
+        }
+    }
+    delete []HeapArr;
 }
 
 void MinHeap::expandArray(MinHeap *minHeap) {
@@ -257,10 +285,5 @@ void MinHeap::delNode(int index) {
 }
 
 MinHeap::~MinHeap() {
-    for (int i = 0; i < last; i++) {
-        if (HeapArr[i] != nullptr) {
-            delete HeapArr[i];
-        }
-    }
-    delete HeapArr;
+    deleteHeap();
 }

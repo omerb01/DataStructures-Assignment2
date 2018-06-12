@@ -63,8 +63,8 @@ Oasis::Oasis(int n, int *clanIDs) {
                 throw OasisAlloctionFailure();
             }
         }
-        delete clans_indexes;
-        delete clanSortedIDs;
+        delete []clans_indexes;
+        delete []clanSortedIDs;
         HashTable clans_hash_table(n, clans, clanIDs);
         this->clans = clans_hash_table;
         this->clan_ids = clans_heap;
