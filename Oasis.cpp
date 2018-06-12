@@ -32,6 +32,18 @@ bool DoubleKey::operator>=(const DoubleKey &key) {
     return !(*this < key);
 }
 
+DoubleKey& DoubleKey::operator+=(const DoubleKey& key) {
+    this->key1 += key.key1;
+    this->key2 = this->key1;
+    return *this;
+}
+
+DoubleKey& DoubleKey::operator-=(const DoubleKey& key) {
+    this->key1 -= key.key1;
+    this->key2 = this->key1;
+    return *this;
+}
+
 class ScoresSummary {
     int sum;
 public:

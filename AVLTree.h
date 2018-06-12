@@ -138,6 +138,15 @@ class AVLTree {
         if(B->right != nullptr) B_rank += B->right->rank;
         if(B->left != nullptr) B_rank += B->left->rank;
         B->rank = B_rank;
+
+        Key A_keys_sum = A->key;
+        Key B_keys_sum = B->key;
+        if(A->right != nullptr) A_keys_sum += A->right->sum_keys;
+        if(A->left != nullptr) A_keys_sum += A->left->sum_keys;
+        A->sum_keys = A_keys_sum;
+        if(B->right != nullptr) B_keys_sum += B->right->sum_keys;
+        if(B->left != nullptr) B_keys_sum += B->left->sum_keys;
+        B->sum_keys = B_keys_sum;
     }
 
     void roll_RR(Node *A) {
@@ -171,6 +180,15 @@ class AVLTree {
         if(B->right != nullptr) B_rank += B->right->rank;
         if(B->left != nullptr) B_rank += B->left->rank;
         B->rank = B_rank;
+
+        Key A_keys_sum = A->key;
+        Key B_keys_sum = B->key;
+        if(A->right != nullptr) A_keys_sum += A->right->sum_keys;
+        if(A->left != nullptr) A_keys_sum += A->left->sum_keys;
+        A->sum_keys = A_keys_sum;
+        if(B->right != nullptr) B_keys_sum += B->right->sum_keys;
+        if(B->left != nullptr) B_keys_sum += B->left->sum_keys;
+        B->sum_keys = B_keys_sum;
     }
 
     void roll_RL(Node *A) {
@@ -214,6 +232,19 @@ class AVLTree {
         if(C->right != nullptr) C_rank += C->right->rank;
         if(C->left != nullptr) C_rank += C->left->rank;
         C->rank = C_rank;
+
+        Key A_keys_sum = A->key;
+        Key B_keys_sum = B->key;
+        Key C_keys_sum = C->key;
+        if(A->right != nullptr) A_keys_sum += A->right->sum_keys;
+        if(A->left != nullptr) A_keys_sum += A->left->sum_keys;
+        A->sum_keys = A_keys_sum;
+        if(B->right != nullptr) B_keys_sum += B->right->sum_keys;
+        if(B->left != nullptr) B_keys_sum += B->left->sum_keys;
+        B->sum_keys = B_keys_sum;
+        if(C->right != nullptr) C_keys_sum += C->right->sum_keys;
+        if(C->left != nullptr) C_keys_sum += C->left->sum_keys;
+        C->sum_keys = C_keys_sum;
     }
 
     void roll_LR(Node *A) {
@@ -257,6 +288,19 @@ class AVLTree {
         if(C->right != nullptr) C_rank += C->right->rank;
         if(C->left != nullptr) C_rank += C->left->rank;
         C->rank = C_rank;
+
+        Key A_keys_sum = A->key;
+        Key B_keys_sum = B->key;
+        Key C_keys_sum = C->key;
+        if(A->right != nullptr) A_keys_sum += A->right->sum_keys;
+        if(A->left != nullptr) A_keys_sum += A->left->sum_keys;
+        A->sum_keys = A_keys_sum;
+        if(B->right != nullptr) B_keys_sum += B->right->sum_keys;
+        if(B->left != nullptr) B_keys_sum += B->left->sum_keys;
+        B->sum_keys = B_keys_sum;
+        if(C->right != nullptr) C_keys_sum += C->right->sum_keys;
+        if(C->left != nullptr) C_keys_sum += C->left->sum_keys;
+        C->sum_keys = C_keys_sum;
     }
 
     static int getSize(Node *vertex) {
@@ -536,11 +580,18 @@ class AVLTree {
     }
 
     static void updateRanks(Node* node, char flag) {
-
         while(node != nullptr) {
             if (flag == '+') node->rank++;
             if (flag == '-') node->rank--;
             node = node->parent;
+        }
+    }
+
+    static void updateSumKeys(Node* parent, Key temp, char flag) {
+        while(parent != nullptr) {
+            if (flag == '+') parent->sum_keys += temp;
+            if (flag == '-') parent->sum_keys -= temp;
+            parent = parent->parent;
         }
     }
 
@@ -593,6 +644,7 @@ public:
                     p->h_left++;
                 }
                 updateRanks(p, '+');
+                updateSumKeys(p, new_node->key, '+');
                 return true;
             }
 
@@ -602,9 +654,11 @@ public:
                 p->h_left++;
             }
             p->rank++;
+            p->sum_keys += new_node->key;
 
             if (abs(getBalanceFactor(p)) > 1) {
                 updateRanks(p->parent, '+');
+                updateSumKeys(p->parent, new_node->key, '+');
                 if (getBalanceFactor(p) < 0) {
                     if (getBalanceFactor(p->right) < 0) {
                         roll_RR(p);
@@ -631,6 +685,7 @@ public:
         if (node == nullptr) return false;
         if (node->key != key) return false;
 
+        Key deleted_key = node->key;
         Node *v = deleteVertex(node);
         Node *p = nullptr;
         while (v != nullptr) {
@@ -639,9 +694,11 @@ public:
             v->h_right = getHeight(v->right);
             v->h_left = getHeight(v->left);
             v->rank--;
+            v->sum_keys -= deleted_key;
 
             if (abs(getBalanceFactor(v)) > 1) {
                 updateRanks(v->parent, '-');
+                updateSumKeys(v->parent, deleted_key, '-');
                 int old_v_height = getHeight(v);
                 if (getBalanceFactor(v) < 0) {
                     if (getBalanceFactor(v->right) < 0) {

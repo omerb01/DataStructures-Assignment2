@@ -36,6 +36,10 @@ public:
     bool operator>(const DoubleKey &key);
 
     bool operator>=(const DoubleKey &key);
+
+    DoubleKey& operator+=(const DoubleKey& key);
+
+    DoubleKey& operator-=(const DoubleKey& key);
 };
 
 class Player {
