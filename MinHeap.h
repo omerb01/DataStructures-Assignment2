@@ -15,29 +15,40 @@ class MinHeap {
         int left;
         int *index;
     };
-    Node **HeapArr=nullptr;
-    int last=0,size=0;
+    Node **HeapArr = nullptr;
+    int last = 0, size = 0;
 
     static void siftDown(int index, MinHeap *minHeap);
-    static bool isMin(Node* node, MinHeap *minHeap);
-    static void swap(Node* node, MinHeap *minHeap);
+
+    static bool isMin(Node *node, MinHeap *minHeap);
+
+    static void swap(Node *node, MinHeap *minHeap);
+
     static int getMin(Node *node, MinHeap *minHeap);
+
     static void expandArray(MinHeap *minHeap);
+
     static void decreaseArray(MinHeap *minHeap);
-    static void deleteHeap(MinHeap *minHeap);
+
 public:
 
-    MinHeap() =default;
+    MinHeap() = default;
 
-    MinHeap(int n, int* array);
+    MinHeap(int n, int *array);
 
-    MinHeap(const MinHeap& heap);
-    int** getIndexes();
-    int* getSortedID();
+    ~MinHeap() = default;
 
-    MinHeap& operator=(const MinHeap& heap);
+    MinHeap(const MinHeap &heap) = delete;
 
-    int* insert(int data);
+    MinHeap &operator=(const MinHeap &heap);
+
+    static void deleteHeap(MinHeap *minHeap);
+
+    int **getIndexes();
+
+    int *getSortedID();
+
+    int *insert(int data);
 
     void decKey(int index, int new_data);
 
@@ -47,8 +58,6 @@ public:
 
     //TODO: temp
     void printArr();
-
-    ~MinHeap();
 };
 
 #endif //DATASTRUCTURES_HW2_MINHEAP_H

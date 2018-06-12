@@ -175,9 +175,6 @@ void Oasis::getMinClan(int *clanID) {
     }
 }
 
-Oasis::~Oasis(){
-    for(int i=0;i<=last;i++){
-        delete clans_indexes[i];
-    }
-    delete []clans_indexes;
+Oasis::~Oasis() {
+    clan_ids.deleteHeap(&clan_ids);
 }
