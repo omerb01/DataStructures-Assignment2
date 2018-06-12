@@ -76,6 +76,7 @@ class HashTable {
     }
 
     static void deleteTable(Node **table, int size) {
+        if(table == nullptr) return;
         for (int i = 0; i < size; i++) {
             Node *list = table[i];
             while (list != nullptr) {
@@ -147,9 +148,7 @@ public:
     }
 
     HashTable &operator=(const HashTable &htable) {
-        if(!(table==nullptr)){
-            deleteTable(table, size);
-        }
+        deleteTable(table, size);
         size = htable.size;
         num_of_elements = htable.num_of_elements;
         table = copyTable(htable.table, htable.size);
