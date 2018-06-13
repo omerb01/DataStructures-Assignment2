@@ -5,15 +5,11 @@
 #include "Oasis.h"
 
 bool testInit(){
-    int arr[3]={12,23,34};
-    Oasis os(3,arr);
-    os.addClan(10);
-    int minclan;
-    os.getMinClan(&minclan);
-/*    os.addPlayer(123,100,23);
-    os.addClan(1);
-    os.getMinClan(&minclan);*/
-    cout << minclan << endl;
+    //int arr[3]={12,23,34};
+    //Oasis os(3,arr);
+    int arr2[10]={1,-2,4,-54,23,54,66,-66,8,-8};
+    Oasis os2(10,arr2);
+    //Oasis os3(1,arr);
     return true;
 }
 
