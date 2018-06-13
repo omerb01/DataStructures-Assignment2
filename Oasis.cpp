@@ -47,6 +47,11 @@ DoubleKey &DoubleKey::operator-=(const DoubleKey &key) {
 Oasis::Oasis(int n, int *clanIDs) {
     try {
         if (!(n < 2 || clanIDs == nullptr)) {
+            for (int i = 0; i < n; i++) {
+                if(clanIDs[i]<0) {
+                    throw OasisInvalidInput();
+                }
+            }
             MinHeap clans_heap(n, clanIDs);
             int **clans_indexes = clans_heap.getIndexes(); //O(n)
             int *clanSortedIDs = clans_heap.getSortedID(); //O(n)
