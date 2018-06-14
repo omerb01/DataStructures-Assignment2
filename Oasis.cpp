@@ -57,8 +57,7 @@ Oasis::Oasis(int n, int *clanIDs) {
         int *clanSortedIDs = clans_heap.getSortedID(); //O(n)
         Clan **clans = new Clan *[n];
         for (int i = 0; i < n; i++) {
-            Clan *new_clan = new Clan();
-            new_clan->clanID = clanSortedIDs[i];
+            Clan *new_clan = new Clan(clanSortedIDs[i]);
             new_clan->heap_index = clans_indexes[i];
             clans[i] = new_clan;
         }
@@ -79,21 +78,18 @@ Oasis::Oasis(int n, int *clanIDs) {
 }
 
 void Oasis::addClan(int clanID) {
-    if (clanID < 0 /*TODO:check if oasis is empty*/) {
+    if (clanID < 0) {
         throw OasisInvalidInput();
     }
     try {
-        try {
-            this->clans.search(clanID); //O(1)
+        Clan temp(clanID);
+        if(clans.insert(&temp, clanID)) { // O(1)
+            Clan& new_clan = clans.search(clanID); // O(1)
+            int *new_clan_ptr = this->clan_ids.insert(clanID);// O(log(n))
+            new_clan.heap_index = new_clan_ptr;
+        }
+        else {
             throw OasisFailure();
-        } catch (HashElementNotFound &he) {
-            Clan *new_clan = new Clan();
-            new_clan->clanID = clanID;
-            int *new_clan_ptr = this->clan_ids.insert(
-                    clanID);//O(log(n))
-            new_clan->heap_index = new_clan_ptr;
-            clans.insert(new_clan, clanID);
-            delete new_clan;
         }
     } catch (std::bad_alloc &ba) {
         throw OasisAlloctionFailure();
@@ -101,16 +97,15 @@ void Oasis::addClan(int clanID) {
 }
 
 void Oasis::addPlayer(int playerID, int score, int clanID) {
-    if (playerID < 0 || score < 0 || clanID < 0 /*TODO:Oasis=NULL*/) {
+    if (playerID < 0 || score < 0 || clanID < 0) {
         throw OasisInvalidInput();
     }
     try {
         Clan &players_clan = this->clans.search(clanID); //O(1)
         Player new_player(playerID, score);
         DoubleKey new_key(score, playerID);
-        if (!players_clan.players.insert(new_player, new_key)) { //O(log(m))
-            throw OasisFailure();
-        }
+        if(!players.insert(playerID, playerID)) throw OasisFailure();
+        players_clan.players.insert(new_player, new_key); //O(log(m))
         players_clan.num_of_players++;
     } catch (HashElementNotFound &e) {
         throw OasisFailure();
@@ -118,7 +113,7 @@ void Oasis::addPlayer(int playerID, int score, int clanID) {
 }
 
 void Oasis::clanFight(int clanID1, int clanID2, int k1, int k2) {
-    if (k1 == 0 || k2 == 0 || clanID1 < 0 || clanID2 < 0)
+    if (k1 <= 0 || k2 <= 0 || clanID1 < 0 || clanID2 < 0)
         throw OasisInvalidInput();
     if (clanID1 == clanID2) throw OasisFailure();
     try {

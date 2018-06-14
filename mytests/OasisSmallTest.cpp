@@ -5,23 +5,13 @@
 #include "../Oasis.h"
 #include "../exceptions.h"
 
-bool testInit(){
-    int arr[3]={12,23,34};
-    Oasis os(3,arr);
-    int arr2[10]={1,-2,4,-54,23,54,66,-66,8,-8};
-    ASSERT_EXCEPTION(Oasis os2(10,arr2), OasisInvalidInput);
-    Oasis os3(1,arr);
+bool testAddPlayer() {
+    int arr[3] = {3, 4, 5};
+    Oasis os(3, arr);
+    os.addPlayer(10, 10, 3);
     return true;
 }
 
-bool testAddClan(){
-    int arr[3]={12,23,34};
-    MinHeap heap(3,arr);
-
-    return true;
-}
-
-int main(){
-    //RUN_TEST(testInit);
-    RUN_TEST(testAddClan);
+int main() {
+    RUN_TEST(testAddPlayer);
 }

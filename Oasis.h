@@ -60,11 +60,19 @@ public:
     int* heap_index;
     int num_of_players;
     AVLTree<Player, DoubleKey> players;
+
+    explicit Clan(int clanID) {
+        this->clanID = clanID;
+        heap_index = nullptr;
+        num_of_players = 0;
+    }
 };
 
 class Oasis {
     HashTable<Clan> clans;
     MinHeap clan_ids;
+    AVLTree<int, int> players;
+
 public:
 
     Oasis(int n, int *clanIDs);

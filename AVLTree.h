@@ -54,6 +54,10 @@ class AVLTree {
             sum_keys -= key;
         }
 
+        ~Node() {
+            delete this->data;
+        }
+
         Node(const Node &node) {
             data = new T(*node.data);
             key = node.key;
@@ -442,6 +446,7 @@ class AVLTree {
         }
         deleteTreeRecursive(root->right);
         deleteTreeRecursive(root->left);
+
 
 
         delete root;
