@@ -21,36 +21,36 @@ catch (OasisFailure &e) { \
 return FAILURE; \
 }
 
-void* init(int n, int *clanIDs) {
-    Oasis *DS;
+void *init(int n, int *clanIDs) {
     try {
-        DS = new Oasis(n, clanIDs);
+        Oasis *DS = new Oasis(n, clanIDs);
+        return (void *) DS;
     }
-    catch (OasisInvalidInput& e) {
+    catch (OasisInvalidInput &e) {
         return nullptr;
     }
-    return (void*)DS;
+
 }
 
 StatusType addClan(void *DS, int clanID) {
-    GENERIC_OUTPUT(((Oasis*)DS)->addClan(clanID));
+    GENERIC_OUTPUT(((Oasis *) DS)->addClan(clanID));
 }
 
 StatusType addPlayer(void *DS, int playerID, int score, int clan) {
-    GENERIC_OUTPUT(((Oasis*)DS)->addPlayer(playerID, score, clan));
+    GENERIC_OUTPUT(((Oasis *) DS)->addPlayer(playerID, score, clan));
 }
 
 StatusType clanFight(void *DS, int clan1, int clan2, int k1, int k2) {
-    GENERIC_OUTPUT(((Oasis*)DS)->clanFight(clan1, clan2, k1, k2));
+    GENERIC_OUTPUT(((Oasis *) DS)->clanFight(clan1, clan2, k1, k2));
 }
 
 StatusType getMinClan(void *DS, int *clan) {
-    GENERIC_OUTPUT(((Oasis*)DS)->getMinClan(clan));
+    GENERIC_OUTPUT(((Oasis *) DS)->getMinClan(clan));
 }
 
-void quit(void** DS) {
-    if(DS == nullptr) return;
-    if(*DS == nullptr) return;
-    delete (Oasis*)(*DS);
+void quit(void **DS) {
+    if (DS == nullptr) return;
+    if (*DS == nullptr) return;
+    delete (Oasis *) (*DS);
     *DS = nullptr;
 }
