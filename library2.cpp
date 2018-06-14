@@ -29,7 +29,6 @@ void *init(int n, int *clanIDs) {
     catch (OasisInvalidInput &e) {
         return nullptr;
     }
-
 }
 
 StatusType addClan(void *DS, int clanID) {

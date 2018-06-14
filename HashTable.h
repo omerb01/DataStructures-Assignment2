@@ -5,7 +5,6 @@
 #ifndef DATASTRUCTURES_HW2_HASHTABLE_H
 #define DATASTRUCTURES_HW2_HASHTABLE_H
 
-#include <cmath>
 #include "exceptions.h"
 
 #define nullptr 0
@@ -33,14 +32,14 @@ class HashTable {
         Node &operator=(const Node &node) = delete;
     };
 
+    Node* check;
     Node **table;
     int size;
     int num_of_elements;
 
 
     int hash(int key) {
-        const double a = (sqrt(5) - 1) / 2;
-        return (int) floor(size * modf(a * key, nullptr));
+        return key % size;
     }
 
     bool isLaden() {
