@@ -2,12 +2,12 @@
 // Created by Ilya on 6/8/2018.
 //
 
-#include "exceptions.h"
-#include "MinHeap.h"
+#include "../exceptions.h"
+#include "../MinHeap.h"
 #include <iostream>
 #include <cstdlib>
-#include "HashTable.h"
-#include "testMacros.h"
+#include "../HashTable.h"
+#include "../testMacros.h"
 
 
 using namespace std;

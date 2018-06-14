@@ -2,8 +2,8 @@
 // Created by Omer on 09/06/2018.
 //
 
-#include "HashTable.h"
-#include "testMacros.h"
+#include "../HashTable.h"
+#include "../testMacros.h"
 
 bool testCreate() {
     int size = 10;

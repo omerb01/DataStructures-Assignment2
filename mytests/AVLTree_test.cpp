@@ -2,11 +2,11 @@
 // Created by Omer on 06/05/2018.
 //
 
-#include "testMacros.h"
+#include "../testMacros.h"
 #include <iostream>
-#include "AVLTree.h"
-#include "Oasis.h"
-#include "exceptions.h"
+#include "../AVLTree.h"
+#include "../Oasis.h"
+#include "../exceptions.h"
 
 template<typename T>
 bool areArraysEqual(T *a, T *b, int n) {

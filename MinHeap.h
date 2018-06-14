@@ -15,8 +15,8 @@ class MinHeap {
         int left;
         int *index;
     };
-    Node **HeapArr = nullptr;
-    int last = 0, size = 0;
+    Node **HeapArr;
+    int last, size;
 
     static void siftDown(int index, MinHeap *minHeap);
 
@@ -32,7 +32,11 @@ class MinHeap {
 
 public:
 
-    MinHeap() = default;
+    MinHeap() {
+        HeapArr = nullptr;
+        last = 0;
+        size = 0;
+    }
 
     MinHeap(int n, int *array);
 

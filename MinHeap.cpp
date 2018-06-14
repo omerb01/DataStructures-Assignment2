@@ -44,6 +44,7 @@ MinHeap& MinHeap::operator=(const MinHeap& heap) {
     HeapArr = heap.HeapArr;
     last = heap.last;
     size = heap.size;
+    return *this;
 }
 
 int **MinHeap::getIndexes() {
@@ -132,16 +133,14 @@ void MinHeap::swap(Node *node, MinHeap *minHeap) {
 void MinHeap::siftDown(int index, MinHeap *minHeap) {
     Node **MinHeapArr = minHeap->HeapArr;
     for (int i = ceil(index / 2.0); i >= 0; i--) {
-        if (MinHeapArr[i]->left == nullptr &&
-            MinHeapArr[i]->right == nullptr ||
+        if ((MinHeapArr[i]->left == nullptr && MinHeapArr[i]->right == nullptr) ||
             isMin(MinHeapArr[i], minHeap)) {
         } else {
             swap(MinHeapArr[i], minHeap);
         }
     }
     for (int i = 0; i <= ceil(index / 2.0); i++) {
-        if (MinHeapArr[i]->left == nullptr &&
-            MinHeapArr[i]->right == nullptr ||
+        if ((MinHeapArr[i]->left == nullptr && MinHeapArr[i]->right == nullptr) ||
             isMin(MinHeapArr[i], minHeap)) {
         } else {
             swap(MinHeapArr[i], minHeap);
@@ -170,7 +169,6 @@ void MinHeap::expandArray(MinHeap *minHeap) {
     try {
         minHeap->size *= 2;
         Node **new_arr = new Node *[minHeap->size];
-        int last = minHeap->last;
         int size = minHeap->size;
         for (int i = 0; i < minHeap->last; i++) {
             new_arr[i] = minHeap->HeapArr[i];

@@ -8,6 +8,8 @@
 #include <cmath>
 #include "exceptions.h"
 
+#define nullptr 0
+
 template<typename T>
 class HashTable {
 
@@ -31,9 +33,9 @@ class HashTable {
         Node &operator=(const Node &node) = delete;
     };
 
-    Node **table=nullptr;
-    int size=0;
-    int num_of_elements=0;
+    Node **table;
+    int size;
+    int num_of_elements;
 
 
     int hash(int key) {
@@ -114,7 +116,11 @@ class HashTable {
 
 public:
 
-    HashTable() = default;
+    HashTable() {
+        table = nullptr;
+        size = 0;
+        num_of_elements = 0;
+    }
 
     HashTable(int num_of_initial_elements, T **elements, int *keys) {
         num_of_elements = num_of_initial_elements;

@@ -1,9 +1,9 @@
 //
 // Created by Ilya on 12-Jun-18.
 //
-#include "testMacros.h"
-#include "Oasis.h"
-#include "exceptions.h"
+#include "../testMacros.h"
+#include "../Oasis.h"
+#include "../exceptions.h"
 
 bool testInit(){
     int arr[3]={12,23,34};

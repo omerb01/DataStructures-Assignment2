@@ -46,34 +46,33 @@ DoubleKey &DoubleKey::operator-=(const DoubleKey &key) {
 
 Oasis::Oasis(int n, int *clanIDs) {
     try {
-        if (!(n < 2 || clanIDs == nullptr)) {
-            for (int i = 0; i < n; i++) {
-                if(clanIDs[i]<0) {
-                    throw OasisInvalidInput();
-                }
+        if (n < 2 || clanIDs == nullptr) throw OasisInvalidInput();
+        for (int i = 0; i < n; i++) {
+            if (clanIDs[i] < 0) {
+                throw OasisInvalidInput();
             }
-            MinHeap clans_heap(n, clanIDs);
-            int **clans_indexes = clans_heap.getIndexes(); //O(n)
-            int *clanSortedIDs = clans_heap.getSortedID(); //O(n)
-            Clan **clans = new Clan *[n];
-            for (int i = 0; i < n; i++) {
-                Clan *new_clan = new Clan();
-                new_clan->clanID = clanSortedIDs[i];
-                new_clan->heap_index = clans_indexes[i];
-                clans[i] = new_clan;
-            }
-
-            HashTable<Clan> clans_hash_table(n, clans, clanIDs);
-            for (int i = 0; i < n; i++) {
-                delete clans[i];
-            }
-            delete[]clans_indexes;
-            delete[]clanSortedIDs;
-            delete[]clans;
-
-            this->clans = clans_hash_table;
-            this->clan_ids = clans_heap;
         }
+        MinHeap clans_heap(n, clanIDs);
+        int **clans_indexes = clans_heap.getIndexes(); //O(n)
+        int *clanSortedIDs = clans_heap.getSortedID(); //O(n)
+        Clan **clans = new Clan *[n];
+        for (int i = 0; i < n; i++) {
+            Clan *new_clan = new Clan();
+            new_clan->clanID = clanSortedIDs[i];
+            new_clan->heap_index = clans_indexes[i];
+            clans[i] = new_clan;
+        }
+
+        HashTable<Clan> clans_hash_table(n, clans, clanSortedIDs);
+        for (int i = 0; i < n; i++) {
+            delete clans[i];
+        }
+        delete[]clans_indexes;
+        delete[]clanSortedIDs;
+        delete[]clans;
+
+        this->clans = clans_hash_table;
+        this->clan_ids = clans_heap;
     } catch (std::bad_alloc &ba) {
         throw OasisAlloctionFailure();
     }
@@ -106,11 +105,14 @@ void Oasis::addPlayer(int playerID, int score, int clanID) {
         throw OasisInvalidInput();
     }
     try {
-        Clan players_clan = this->clans.search(clanID); //O(1)
+        Clan &players_clan = this->clans.search(clanID); //O(1)
         Player new_player(playerID, score);
-        DoubleKey new_key(playerID, score);
-        players_clan.players.insert(new_player, new_key); //O(log(m))
-    } catch (OasisException &os) {
+        DoubleKey new_key(score, playerID);
+        if (!players_clan.players.insert(new_player, new_key)) { //O(log(m))
+            throw OasisFailure();
+        }
+        players_clan.num_of_players++;
+    } catch (HashElementNotFound &e) {
         throw OasisFailure();
     }
 }
@@ -139,6 +141,7 @@ void Oasis::clanFight(int clanID1, int clanID2, int k1, int k2) {
         } else { // result == '1'
             conquered_clan = &clan1;
         }
+
         clan_ids.decKey(*conquered_clan->heap_index, -1);
         conquered_clan->heap_index = nullptr;
         clan_ids.delMin();
