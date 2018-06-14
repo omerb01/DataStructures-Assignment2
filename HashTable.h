@@ -167,7 +167,10 @@ public:
         if (table[index] != nullptr) {
             Node *list = table[index];
             while (list != nullptr) {
-                if (list->key == key) return false;
+                if (list->key == key) {
+                    delete node;
+                    return false;
+                }
                 list = list->next;
             }
             node->next = table[index];

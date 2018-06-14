@@ -8,7 +8,7 @@
 bool testAddPlayer() {
     int arr[3] = {3, 4, 5};
     Oasis os(3, arr);
-    os.addPlayer(10, 10, 3);
+    os.addClan(3);
     return true;
 }
 
